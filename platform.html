@@ -487,7 +487,32 @@ function render(){const m=document.getElementById('main');if(app.page==='p1')ren
 // ===== 第1页：指标异动归因总结 =====
 function renderP1(m){
 m.innerHTML=`
-<div class="value-banner"><div class="icon">💎</div><div class="text"><h3>本页价值</h3><p>快速定位"整体指标为什么变了"，通过交叉多维度挖掘出真正的问题点。不只告诉你"指标红了"，而是直接回答"是哪个客群、哪个阶段、什么原因导致的"，并给出可执行的建议动作。</p></div></div>
+<div class="value-banner" style="flex-direction:column;gap:16px;padding:24px 28px;background:linear-gradient(135deg,#1d4ed8 0%,#2563eb 40%,#38bdf8 100%);border:none;color:#fff;border-radius:20px">
+<div>
+<h3 style="font-size:20px;font-weight:900;color:#fff;margin-bottom:8px">异动归因总结：先告诉你"今天最该管什么"，再告诉你"怎么管"</h3>
+<p style="font-size:13px;line-height:2;color:#e0edff">这页不再只是一个仪表盘，而是一个更接近真实运营管理的<b>经营控制台</b>。你会先看到异常问题、建议动作和预估效果，再往下看趋势、归因和待办。这能更直观地体现平台价值：<b>它不是帮你多看几张图，而是帮你更快做出正确动作。</b></p>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%">
+<div style="background:rgba(255,255,255,.12);border-radius:14px;padding:16px 18px;backdrop-filter:blur(8px)">
+<h4 style="font-size:14px;font-weight:800;color:#fff;margin-bottom:10px">📌 这页最强的 4 个价值点</h4>
+<ul style="margin:0;padding-left:18px;font-size:12px;line-height:2.2;color:#e0edff">
+<li>把<b>"指标异常"</b>直接翻译成<b>"经营问题"</b>——不只说指标红了，而是告诉你是哪个客群、哪个阶段、什么原因导致的</li>
+<li>把<b>"原因分析"</b>直接翻译成<b>"可执行动作"</b>——每个异动点都附带建议动作和预估影响</li>
+<li>把<b>"效果提升"</b>与<b>"投诉副作用"</b>放在一起看——所有策略建议同时标注预估催回提升和投诉风险</li>
+<li><b>聚焦客群结构变迁</b>而非单纯策略问题——归因锚定在"是什么样的人在变多/变差"，而不是简单归结为"催得不够"</li>
+</ul>
+</div>
+<div style="background:rgba(255,255,255,.12);border-radius:14px;padding:16px 18px;backdrop-filter:blur(8px)">
+<h4 style="font-size:14px;font-weight:800;color:#fff;margin-bottom:10px">🎯 当前最值得优先投入的方向</h4>
+<ul style="margin:0;padding-left:18px;font-size:12px;line-height:2.2;color:#e0edff">
+<li><b>短逾期漏斗治理：</b>补扣款断点——大金额用户D1-D5扣款成功率下降3.6pp是回款下降的首要原因，晚间补扣+自然人补扣预计可回收+1.2pp</li>
+<li><b>高风险客群前置：</b>C卡7-10级×大金额×D15-D30——这个三维交叉客群直接拖累整体M1催回率约1pp，需D15后立即触发支付限制+协商前置</li>
+<li><b>协商经营中心：</b>补履约与复逾闭环——协商进件涨18%但高风险大金额复逾率28.6%，方案分层+履约预警是降低复逾的关键</li>
+<li><b>敏感动作治理：</b>补投诉与监管归因——征信/外呼类敏感投诉48件环比+23%，话术审计+审批留痕+提前告知是合规底线</li>
+</ul>
+</div>
+</div>
+</div>
 <div class="hero"><h2>📊 指标异动归因总结</h2><p>展示核心经营指标及其环比变化，自动识别异动并通过交叉维度分析（风险等级×金额段×逾期阶段×用户特征）定位根因，归纳的原因聚焦客群结构变迁而非单纯策略问题。</p></div>
 <div class="grid kpi" id="p1kpis"></div>
 <div class="card" style="margin-bottom:16px"><div class="title">🔥 本月核心异动归因（按影响度排序）</div><div class="sub">以下异动均通过交叉多维度分析定位，每个问题点标注了涉及的维度组合、根因分析和建议动作。</div><div class="issue-list" id="p1issues"></div></div>
@@ -509,7 +534,32 @@ function renderP2(m){
 const dim=D.dims.find(x=>x.key===app.dim)||D.dims[0];
 const sub=dim.subs[app.sub]||dim.subs[0];
 m.innerHTML=`
-<div class="value-banner"><div class="icon">💎</div><div class="text"><h3>本页价值</h3><p>按用户特征、借款情况、历史逾期、人行借还、专项标签等维度进行单维度分析，再聚合多维度交叉数据，用详实的数据和文字描述精确回答"究竟是哪些维度结合产生了催回的波动"，为第1页的异动提供数据支撑。</p></div></div>
+<div class="value-banner" style="flex-direction:column;gap:16px;padding:24px 28px;background:linear-gradient(135deg,#1d4ed8 0%,#2563eb 40%,#38bdf8 100%);border:none;color:#fff;border-radius:20px">
+<div>
+<h3 style="font-size:20px;font-weight:900;color:#fff;margin-bottom:8px">客群维度拆解：用数据回答"到底是谁在变差、变差了多少"</h3>
+<p style="font-size:13px;line-height:2;color:#e0edff">这页是第1页"异动归因"的<b>数据证据库</b>。第1页告诉你结论，这页告诉你结论背后的每一个数据支撑。每个维度都包含<b>KPI卡片、分布图表、明细数据、异动结论</b>以及最关键的<b>多维度交叉洞察</b>——精确回答"究竟是哪些维度结合产生了催回的波动"。</p>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%">
+<div style="background:rgba(255,255,255,.12);border-radius:14px;padding:16px 18px;backdrop-filter:blur(8px)">
+<h4 style="font-size:14px;font-weight:800;color:#fff;margin-bottom:10px">📌 这页最强的 4 个价值点</h4>
+<ul style="margin:0;padding-left:18px;font-size:12px;line-height:2.2;color:#e0edff">
+<li><b>6大维度全景扫描</b>——风险等级B/C卡、用户特征（年龄/城市）、借款情况（金额段）、历史逾期（次数/OH天数）、人行借还（外部负债）、专项标签，覆盖贷后分析所有主流视角</li>
+<li><b>单维度看趋势，交叉维度看根因</b>——不止看"C卡催回率低"，更看"C卡×大金额×D15-D30"三维交叉后催回率只有24.6%，精确定位问题点</li>
+<li><b>每个子维度都有文字归因结论</b>——不让你自己从图表里猜答案，异动分析和交叉洞察直接用文字告诉你核心发现和建议</li>
+<li><b>为第1页提供数据弹药</b>——这里的每一张表、每一个交叉结论，都是第1页"异动归因"的底层数据支撑</li>
+</ul>
+</div>
+<div style="background:rgba(255,255,255,.12);border-radius:14px;padding:16px 18px;backdrop-filter:blur(8px)">
+<h4 style="font-size:14px;font-weight:800;color:#fff;margin-bottom:10px">🎯 当前最需关注的交叉信号</h4>
+<ul style="margin:0;padding-left:18px;font-size:12px;line-height:2.2;color:#e0edff">
+<li><b>C卡7-10级 × 大金额 × D15-D30：</b>催回率仅24.6%，5.2万人、余额¥18.6亿，是M1下降的最大单一驱动</li>
+<li><b>18-24岁 × 三线以下 × 6次+借款：</b>催回率71.4%，12.4万人，年轻下沉多贷三因素叠加导致还款优先级极低</li>
+<li><b>2万+ × C卡7-10级 × 历史逾期2次+：</b>催回率62.4%，3.6万人、余额¥28.4亿，建议D1即进入专案人工池</li>
+<li><b>外部负债7笔+ × 征信<650 × 近6月查询10次+：</b>催回率52.4%，4.8万人，催收ROI极低，建议转法务/核销评估</li>
+</ul>
+</div>
+</div>
+</div>
 <div class="hero"><h2>👥 按客群维度拆解催回分析</h2><p>选择不同维度和子维度，查看该切面下的催回率分布、入催率、余额占比等核心指标，并通过交叉维度洞察定位复合因素。</p></div>
 <div class="card" style="margin-bottom:14px"><div class="title">维度选择</div>
 <div class="attrib-dims">${D.dims.map(x=>`<div class="attrib-dim${x.key===app.dim?' active':''}" onclick="setDim('${x.key}')">${x.icon} ${x.name}</div>`).join('')}</div>
@@ -534,7 +584,32 @@ function setSeg(s){app.seg=s;dc();render()}
 function renderP3(m){
 const seg=D.segs[app.seg]||D.segs['普通用户'];
 m.innerHTML=`
-<div class="value-banner"><div class="icon">💎</div><div class="text"><h3>本页价值</h3><p>展示不同客群在不同逾期阶段的策略组合（通用策略+差异化策略），并通过历史催回率趋势对比，分析哪些催收手段效果在增强、哪些在减弱，着重归因分析策略有效性的变化。</p></div></div>
+<div class="value-banner" style="flex-direction:column;gap:16px;padding:24px 28px;background:linear-gradient(135deg,#1d4ed8 0%,#2563eb 40%,#38bdf8 100%);border:none;color:#fff;border-radius:20px">
+<div>
+<h3 style="font-size:20px;font-weight:900;color:#fff;margin-bottom:8px">策略与执行管理：告诉你"现在的策略组合对不对"，以及"该怎么调"</h3>
+<p style="font-size:13px;line-height:2;color:#e0edff">这页把贷后催收从"按流程走"变成<b>"按效果调"</b>。你能看到每个客群在每个逾期阶段用了什么策略、当前效果如何、历史趋势怎样变化——最重要的是，<b>哪些手段效果在减弱、哪些在增强</b>。策略不是一成不变的，这页帮你发现"策略疲劳"并及时调整。</p>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%">
+<div style="background:rgba(255,255,255,.12);border-radius:14px;padding:16px 18px;backdrop-filter:blur(8px)">
+<h4 style="font-size:14px;font-weight:800;color:#fff;margin-bottom:10px">📌 这页最强的 4 个价值点</h4>
+<ul style="margin:0;padding-left:18px;font-size:12px;line-height:2.2;color:#e0edff">
+<li><b>3类客群 × 4个阶段的策略矩阵</b>——普通用户、大金额用户、贷中高定价用户，分别在D1-D15/D16-D30/D30-D60/D61+各有不同策略组合</li>
+<li><b>通用策略 vs 差异化策略一目了然</b>——绿色标签=通用策略（所有人都有），橙/红标签=差异化策略（仅该客群触发），清晰展示策略差异</li>
+<li><b>历史趋势对比发现策略疲劳</b>——每个客群每个阶段都有近6月催回率折线图，趋势下滑就意味着策略需要升级</li>
+<li><b>归因分析直指行动</b>——不只说"催回率下降了"，而是分析"下降是因为扣款断点、触达疲劳还是客群结构变化"，并给出具体调整建议</li>
+</ul>
+</div>
+<div style="background:rgba(255,255,255,.12);border-radius:14px;padding:16px 18px;backdrop-filter:blur(8px)">
+<h4 style="font-size:14px;font-weight:800;color:#fff;margin-bottom:10px">🎯 当前策略层面的核心发现</h4>
+<ul style="margin:0;padding-left:18px;font-size:12px;line-height:2.2;color:#e0edff">
+<li><b>扣款效果在减弱：</b>首轮扣款成功率72.0%→68.4%（-3.6pp/6月），零钱余额不足占比上升是主因，需增加晚间补扣和自然人账户补扣</li>
+<li><b>支付限制效果在增强：</b>限制后回款率12.6%→13.0%，高风险大金额客群效果最好，建议扩大灰度范围</li>
+<li><b>D16-D30是所有客群的策略薄弱窗口：</b>三类客群在该阶段催回率下滑速度都最快，核心是扣款失败后缺乏有效承接</li>
+<li><b>贷中高定价客群需要最激进的策略前置：</b>与C卡高风险重叠68%，D3未回款就应触发灰度支付限制</li>
+</ul>
+</div>
+</div>
+</div>
 <div class="hero"><h2>⚙️ 策略与执行管理</h2><p>按客群切换查看每个阶段的策略配置和历史催回率趋势。纵轴是时间，横轴是阶段，帮助你发现策略效果的波动规律和归因线索。</p></div>
 <div class="card" style="margin-bottom:14px"><div class="title">客群选择</div>
 <div class="tabs">${Object.keys(D.segs).map(s=>`<div class="tab${s===app.seg?' active':''}" onclick="setSeg('${s}')">${s}</div>`).join('')}</div></div>
@@ -593,7 +668,32 @@ box.scrollTop=box.scrollHeight;
 }
 function renderP4(m){
 m.innerHTML=`
-<div class="value-banner"><div class="icon">💎</div><div class="text"><h3>本页价值</h3><p>贷后数据分析虚拟员工（Agent）通过学习历史分析PPT和结论，掌握团队的分析风格和方法论。当你输入一个分析需求时，Agent能自动生成包含"问题背景→问题归因→解决方法与约束→最优方案建议"的一体化分析报告，大幅缩短分析周期。</p></div></div>
+<div class="value-banner" style="flex-direction:column;gap:16px;padding:24px 28px;background:linear-gradient(135deg,#1d4ed8 0%,#2563eb 40%,#38bdf8 100%);border:none;color:#fff;border-radius:20px">
+<div>
+<h3 style="font-size:20px;font-weight:900;color:#fff;margin-bottom:8px">贷后数据分析虚拟员工：把一周的分析工作压缩到 5 分钟</h3>
+<p style="font-size:13px;line-height:2;color:#e0edff">这不是一个简单的聊天机器人，而是一个<b>学过你所有历史PPT和分析方法论的"贷后分析师"</b>。它掌握你的分析风格、归因框架和报告格式。输入一个问题，它输出一份完整的分析报告——从问题背景到根因拆解、方案对比到最优建议，<b>质量对标你团队的正式PPT产出</b>。</p>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%">
+<div style="background:rgba(255,255,255,.12);border-radius:14px;padding:16px 18px;backdrop-filter:blur(8px)">
+<h4 style="font-size:14px;font-weight:800;color:#fff;margin-bottom:10px">📌 这页最强的 4 个价值点</h4>
+<ul style="margin:0;padding-left:18px;font-size:12px;line-height:2.2;color:#e0edff">
+<li><b>从"写PPT"到"问一句话"</b>——传统做一份催回率归因分析PPT需要3-5天（取数→分析→写结论→做PPT），虚拟员工让你5分钟内获得同等质量的分析报告</li>
+<li><b>学习团队分析风格</b>——Agent已学习你历史PPT中的分析框架（问题背景→归因→方案评估→建议），输出格式与团队风格一致，可直接用于汇报</li>
+<li><b>结构化输出而非自由发散</b>——每份报告都包含"问题量化→贡献度排序→多方案对比（含约束条件）→推荐组合"，不是泛泛而谈</li>
+<li><b>知识持续积累</b>——每次上传新PPT都在扩充知识库，Agent越用越懂你的业务逻辑和分析偏好</li>
+</ul>
+</div>
+<div style="background:rgba(255,255,255,.12);border-radius:14px;padding:16px 18px;backdrop-filter:blur(8px)">
+<h4 style="font-size:14px;font-weight:800;color:#fff;margin-bottom:10px">🎯 推荐使用场景</h4>
+<ul style="margin:0;padding-left:18px;font-size:12px;line-height:2.2;color:#e0edff">
+<li><b>日常指标异动响应：</b>"这个月大金额M1催回率为什么降了"——Agent自动从客群、阶段、策略多角度拆解</li>
+<li><b>月度复盘快速初稿：</b>"帮我生成本月贷后运营复盘"——Agent根据最新数据生成结构化复盘报告</li>
+<li><b>策略调整前的影响评估：</b>"如果扩大支付限制灰度到20%，预估影响是什么"——Agent给出多维影响评估</li>
+<li><b>新同事快速上手：</b>不需要老员工花一周带教，新人直接问Agent就能理解团队分析方法论和业务逻辑</li>
+</ul>
+</div>
+</div>
+</div>
 <div class="hero"><h2>🤖 贷后数据分析虚拟员工</h2><p>这是一个基于历史分析经验训练的AI Agent。它学习了你过往的PPT写作方式和分析框架，能够根据输入的分析需求，自动生成符合团队风格的一体化分析报告。</p></div>
 <div class="grid equal">
 <div class="card">
