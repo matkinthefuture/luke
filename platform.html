@@ -3,1199 +3,617 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>贷后策略运营平台 v3.0</title>
+<title>贷后运营策略管理平台 v4.0</title>
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#f3f7fb;
-  --card:#ffffff;
-  --text:#172033;
-  --sub:#667085;
-  --line:#e6ebf3;
-  --blue:#2563eb;
-  --blue2:#1d4ed8;
-  --green:#059669;
-  --orange:#d97706;
-  --red:#dc2626;
-  --purple:#7c3aed;
-  --side:#0f172a;
-  --shadow:0 10px 30px rgba(15,23,42,.08);
-  --radius:16px;
-}
+:root{--bg:#f3f7fb;--card:#fff;--text:#172033;--sub:#667085;--line:#e6ebf3;--blue:#2563eb;--blue2:#1d4ed8;--green:#059669;--orange:#d97706;--red:#dc2626;--purple:#7c3aed;--side:#0f172a;--shadow:0 10px 30px rgba(15,23,42,.08);--radius:16px}
 body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);font-size:14px}
-.side{position:fixed;left:0;top:0;width:248px;height:100vh;background:linear-gradient(180deg,#0f172a 0%,#111827 100%);color:#fff;display:flex;flex-direction:column;z-index:20}
-.brand{padding:22px 20px 18px;border-bottom:1px solid rgba(255,255,255,.08)}
+.side{position:fixed;left:0;top:0;width:260px;height:100vh;background:linear-gradient(180deg,#0f172a,#111827);color:#fff;display:flex;flex-direction:column;z-index:20}
+.brand{padding:22px 20px 16px;border-bottom:1px solid rgba(255,255,255,.08)}
 .brand h1{font-size:17px;display:flex;gap:8px;align-items:center}
-.brand p{margin-top:10px;font-size:11px;line-height:1.75;color:#94a3b8}
+.brand p{margin-top:8px;font-size:11px;line-height:1.7;color:#94a3b8}
 .nav{flex:1;overflow:auto;padding:10px 0}
-.nav-group{padding:10px 20px 6px;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#64748b}
-.nav-item{display:flex;align-items:center;gap:10px;padding:11px 20px;color:#d1d5db;border-left:3px solid transparent;cursor:pointer;transition:.2s;font-size:13px}
+.nav-group{padding:12px 20px 6px;font-size:10px;letter-spacing:1px;color:#64748b;text-transform:uppercase}
+.nav-item{display:flex;align-items:center;gap:10px;padding:12px 20px;color:#d1d5db;border-left:3px solid transparent;cursor:pointer;transition:.2s;font-size:13px}
 .nav-item:hover{background:rgba(255,255,255,.06);color:#fff}
 .nav-item.active{background:rgba(37,99,235,.14);color:#93c5fd;border-left-color:#60a5fa}
 .side-foot{padding:14px 20px;border-top:1px solid rgba(255,255,255,.08);font-size:11px;color:#94a3b8;line-height:1.7}
-.header{position:fixed;left:248px;right:0;top:0;height:62px;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 24px;z-index:15}
-.path{font-size:14px;color:var(--sub)}
-.path b{color:var(--text)}
+.header{position:fixed;left:260px;right:0;top:0;height:60px;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 24px;z-index:15}
+.path{font-size:14px;color:var(--sub)}.path b{color:var(--text)}
 .head-meta{display:flex;gap:10px;align-items:center;color:var(--sub);font-size:12px}
 .badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:700}
-.badge.blue{background:#dbeafe;color:#1d4ed8}
-.badge.green{background:#d1fae5;color:#047857}
-.badge.orange{background:#fef3c7;color:#b45309}
-.badge.red{background:#fee2e2;color:#b91c1c}
-.main{margin-left:248px;padding:86px 24px 32px;min-height:100vh}
-.hero{background:linear-gradient(135deg,#1d4ed8,#2563eb 58%,#38bdf8);border-radius:22px;color:#fff;padding:26px 28px;box-shadow:var(--shadow);margin-bottom:18px}
-.hero h2{font-size:24px;margin-bottom:10px}
-.hero p{max-width:980px;font-size:13px;line-height:1.9;color:#dbeafe}
-.hero-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:14px;margin-top:18px}
-.hero-box{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:16px}
-.hero-box h3{font-size:14px;margin-bottom:8px}
-.hero-box ul{padding-left:18px;color:#eff6ff;font-size:12px;line-height:1.85}
-.grid{display:grid;gap:16px;margin-bottom:18px}
-.grid.kpi{grid-template-columns:repeat(6,1fr)}
-.grid.two{grid-template-columns:1.15fr .85fr}
-.grid.equal{grid-template-columns:1fr 1fr}
-.grid.three{grid-template-columns:repeat(3,1fr)}
-.grid.four{grid-template-columns:repeat(4,1fr)}
+.badge.blue{background:#dbeafe;color:#1d4ed8}.badge.green{background:#d1fae5;color:#047857}.badge.orange{background:#fef3c7;color:#b45309}.badge.red{background:#fee2e2;color:#b91c1c}
+.main{margin-left:260px;padding:82px 24px 32px;min-height:100vh}
+.value-banner{background:linear-gradient(135deg,#f0f9ff,#eff6ff);border:1px solid #bfdbfe;border-radius:16px;padding:16px 20px;margin-bottom:16px;display:flex;gap:12px;align-items:flex-start}
+.value-banner .icon{font-size:22px;flex-shrink:0;margin-top:2px}
+.value-banner .text h3{font-size:14px;color:var(--blue2);margin-bottom:4px}
+.value-banner .text p{font-size:12px;color:#475569;line-height:1.8}
+.hero{background:linear-gradient(135deg,#1d4ed8,#2563eb 58%,#38bdf8);border-radius:22px;color:#fff;padding:24px 26px;box-shadow:var(--shadow);margin-bottom:16px}
+.hero h2{font-size:22px;margin-bottom:8px}.hero p{max-width:960px;font-size:13px;line-height:1.85;color:#dbeafe}
+.grid{display:grid;gap:16px;margin-bottom:16px}
+.grid.kpi{grid-template-columns:repeat(6,1fr)}.grid.two{grid-template-columns:1.15fr .85fr}.grid.equal{grid-template-columns:1fr 1fr}
+.grid.three{grid-template-columns:repeat(3,1fr)}.grid.four{grid-template-columns:repeat(4,1fr)}
 .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
-.title{font-size:16px;font-weight:800;margin-bottom:10px}
-.sub{font-size:12px;line-height:1.8;color:var(--sub)}
-.kpi-card{position:relative;overflow:hidden}
-.kpi-card:before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:var(--blue)}
-.kpi-card.red:before{background:var(--red)}
-.kpi-card.green:before{background:var(--green)}
-.kpi-card.orange:before{background:var(--orange)}
-.kpi-card.purple:before{background:var(--purple)}
-.kpi-label{font-size:12px;color:var(--sub);margin-bottom:6px}
-.kpi-value{font-size:28px;font-weight:800;margin-bottom:4px}
-.kpi-change{font-size:12px;font-weight:700}
-.kpi-change.good{color:var(--green)}
-.kpi-change.bad{color:var(--red)}
-.spark{height:34px;margin-top:8px}
-.chart{height:320px;width:100%}
-.chart.sm{height:250px}
-.row-between{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.title{font-size:16px;font-weight:800;margin-bottom:10px}.sub{font-size:12px;line-height:1.8;color:var(--sub)}
+.kpi-card{position:relative;overflow:hidden}.kpi-card:before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:var(--blue)}
+.kpi-card.red:before{background:var(--red)}.kpi-card.green:before{background:var(--green)}.kpi-card.orange:before{background:var(--orange)}.kpi-card.purple:before{background:var(--purple)}
+.kpi-label{font-size:12px;color:var(--sub);margin-bottom:6px}.kpi-value{font-size:26px;font-weight:800;margin-bottom:4px}
+.kpi-change{font-size:12px;font-weight:700}.kpi-change.good{color:var(--green)}.kpi-change.bad{color:var(--red)}
+.spark{height:34px;margin-top:6px}
+.chart{height:320px;width:100%}.chart.sm{height:250px}.chart.xs{height:200px}
 .issue-list{display:grid;gap:12px}
 .issue{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fff}
-.issue h4{font-size:14px;margin-bottom:8px}
-.issue p{font-size:12px;color:var(--sub);line-height:1.8}
-.kv{display:grid;grid-template-columns:72px 1fr;gap:10px;margin-top:8px;font-size:12px}
-.kv b{color:var(--text)}
-.metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
-.metric{padding:14px;border-radius:14px;background:#f8fbff;border:1px solid var(--line)}
-.metric .label{font-size:12px;color:var(--sub);margin-bottom:6px}
-.metric .value{font-size:24px;font-weight:800}
-.metric .desc{font-size:11px;color:var(--sub);margin-top:6px;line-height:1.75}
-.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.flow .step{padding:14px;border-radius:14px;border:1px solid var(--line);background:#f8fbff;position:relative}
-.flow .step:not(:last-child):after{content:"→";position:absolute;right:-11px;top:50%;transform:translateY(-50%);font-size:18px;color:#94a3b8}
-.flow .num{width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;margin-bottom:8px}
-.flow h5{font-size:13px;margin-bottom:4px}
-.flow p{font-size:12px;color:var(--sub);line-height:1.7}
-.notice{display:flex;gap:12px;align-items:flex-start;margin-top:14px;padding:14px;border-radius:14px;background:#fff7ed;border:1px solid #fed7aa}
-.notice p{font-size:12px;line-height:1.8;color:#9a3412}
-.notice .icon{font-size:18px}
+.issue h4{font-size:14px;margin-bottom:6px}.issue p{font-size:12px;color:var(--sub);line-height:1.8}
+.kv{display:grid;grid-template-columns:72px 1fr;gap:8px;margin-top:6px;font-size:12px}.kv b{color:var(--text)}
+.row-between{display:flex;justify-content:space-between;align-items:center;gap:12px}
 .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
 .tab{padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:12px;cursor:pointer;transition:.2s}
 .tab.active,.tab:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
-.attrib-dims{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:14px}
+.table{width:100%;border-collapse:collapse;font-size:12px;min-width:700px}
+.table th{background:#eff6ff;color:#1e3a8a;font-weight:800;padding:10px;border-bottom:1px solid var(--line)}
+.table td{padding:10px;border-bottom:1px solid var(--line);text-align:center;white-space:nowrap}
+.table tr:nth-child(even){background:#fafcff}.table tr:hover{background:#f3f6fb}
+.panel{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fff;margin-bottom:10px}
+.panel h4{font-size:13px;margin-bottom:6px}.panel p,.panel li{font-size:12px;color:var(--sub);line-height:1.85}
+.panel ul{padding-left:18px}
+.notice{display:flex;gap:12px;align-items:flex-start;padding:14px;border-radius:14px;background:#fff7ed;border:1px solid #fed7aa;margin-top:12px}
+.notice p{font-size:12px;line-height:1.8;color:#9a3412}.notice .icon{font-size:18px}
+.metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:12px}
+.metric{padding:14px;border-radius:14px;background:#f8fbff;border:1px solid var(--line)}
+.metric .label{font-size:12px;color:var(--sub);margin-bottom:6px}.metric .value{font-size:22px;font-weight:800}.metric .desc{font-size:11px;color:var(--sub);margin-top:4px;line-height:1.7}
+.attrib-dims{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
 .attrib-dim{padding:8px 14px;border-radius:12px;border:1.5px solid var(--line);background:#fff;font-size:12px;cursor:pointer;transition:.2s;font-weight:600}
 .attrib-dim.active{background:linear-gradient(135deg,#2563eb,#38bdf8);color:#fff;border-color:transparent;box-shadow:0 4px 12px rgba(37,99,235,.25)}
 .attrib-dim:hover:not(.active){border-color:var(--blue);color:var(--blue)}
-.attrib-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
-.attrib-sum-card{padding:14px;border-radius:14px;border:1px solid var(--line);background:#f8fbff}
-.attrib-sum-card .lab{font-size:11px;color:var(--sub);margin-bottom:4px}
-.attrib-sum-card .val{font-size:22px;font-weight:800}
-.attrib-sum-card .chg{font-size:11px;font-weight:700;margin-top:4px}
-.attrib-sum-card .chg.bad{color:var(--red)}
-.attrib-sum-card .chg.good{color:var(--green)}
-.attrib-detail{border-radius:14px;overflow:hidden;border:1px solid var(--line);margin-top:12px}
-.attrib-detail table{width:100%;border-collapse:collapse;font-size:12px}
-.attrib-detail th{background:#f1f5f9;padding:10px 12px;text-align:left;font-weight:700;border-bottom:1px solid var(--line)}
-.attrib-detail td{padding:10px 12px;border-bottom:1px solid #f1f5f9}
-.attrib-detail tr:last-child td{border-bottom:none}
-.attrib-detail tr:hover td{background:#f8fbff}
-.bar-inline{display:inline-block;height:8px;border-radius:4px;background:var(--blue);vertical-align:middle;margin-left:6px}
-.attrib-insight{margin-top:14px;padding:14px 16px;border-radius:14px;background:linear-gradient(135deg,#eff6ff,#f0f9ff);border:1px solid #bfdbfe}
-.attrib-insight h4{font-size:13px;margin-bottom:8px;color:var(--blue2)}
-.attrib-insight p{font-size:12px;line-height:1.9;color:#334155}
-.attrib-action{margin-top:10px;padding:12px 16px;border-radius:14px;background:#fff7ed;border:1px solid #fed7aa}
-.attrib-action h4{font-size:13px;margin-bottom:8px;color:#b45309}
-.attrib-action p{font-size:12px;line-height:1.9;color:#9a3412}
 .contrib-bar{display:flex;height:32px;border-radius:8px;overflow:hidden;margin:10px 0}
 .contrib-bar div{display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;min-width:28px}
-.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:14px}
-.table{width:100%;border-collapse:collapse;font-size:12px;min-width:820px}
-.table th{background:#eff6ff;color:#1e3a8a;font-weight:800;padding:10px;border-bottom:1px solid var(--line)}
-.table td{padding:10px;border-bottom:1px solid var(--line);text-align:center;white-space:nowrap}
-.table tr:nth-child(even){background:#fafcff}
-.table tr:hover{background:#f3f6fb}
-.stack{display:grid;gap:12px}
-.panel{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fff}
-.panel h4{font-size:13px;margin-bottom:8px}
-.panel ul{padding-left:18px;color:var(--sub);font-size:12px;line-height:1.85}
-.panel p{font-size:12px;color:var(--sub);line-height:1.85}
-.board{display:grid;grid-template-columns:1.05fr .95fr;gap:16px}
-.tree{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.tree-col{padding:16px;border-radius:16px;background:#f8fbff;border:1px solid var(--line)}
-.tree-col h4{font-size:13px;margin-bottom:10px}
-.pill{display:inline-block;padding:6px 10px;border-radius:999px;background:#eef2ff;color:#3730a3;font-size:11px;font-weight:700;margin:0 6px 8px 0}
-.release-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.release{padding:16px;border-radius:16px;border:1px solid var(--line);background:#fff}
-.release h4{font-size:13px;margin-bottom:8px}
-.release p{font-size:12px;color:var(--sub);line-height:1.8}
-.release .tag{margin-top:10px;display:inline-flex;padding:5px 10px;border-radius:999px;font-size:11px;font-weight:800}
-.release .stable{background:#d1fae5;color:#047857}
-.release .gray{background:#fef3c7;color:#b45309}
-.release .plan{background:#dbeafe;color:#1d4ed8}
-.matrix{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:14px}
-.mcell{padding:12px;border-radius:14px;border:1px solid var(--line);background:#f8fbff;min-height:116px}
-.mcell h5{font-size:12px;margin-bottom:6px}
-.mcell p{font-size:11px;color:var(--sub);line-height:1.7}
-.control{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.select, .input{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;font-size:12px;color:var(--text)}
-.label{font-size:12px;color:var(--sub);margin-bottom:6px;font-weight:700}
-.btn{padding:10px 14px;border:none;border-radius:10px;background:var(--blue);color:#fff;font-size:12px;font-weight:800;cursor:pointer}
-.btn:hover{background:var(--blue2)}
-.toggle{display:flex;gap:8px;flex-wrap:wrap}
-.toggle .chip{padding:7px 10px;border:1px solid var(--line);border-radius:999px;font-size:12px;background:#fff;cursor:pointer}
-.toggle .chip.active{background:#dbeafe;border-color:#93c5fd;color:#1d4ed8;font-weight:800}
-.ai-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.ask{padding:14px;border:1px solid var(--line);border-radius:14px;background:#f8fbff;cursor:pointer;transition:.2s}
-.ask:hover{transform:translateY(-1px);border-color:#93c5fd}
-.ask h4{font-size:13px;margin-bottom:6px}
-.ask p{font-size:12px;color:var(--sub);line-height:1.75}
-.ai-result{padding:16px;border-radius:16px;background:linear-gradient(135deg,#eff6ff,#f8fbff);border:1px solid #bfdbfe}
-.ai-block{margin-top:10px;padding:12px;border-radius:12px;background:#fff;border:1px solid #dbeafe}
-.ai-block p{font-size:12px;color:var(--sub);line-height:1.85}
-.timeline{display:grid;gap:10px}
-.tl{display:grid;grid-template-columns:110px 1fr;gap:12px;padding:12px;border:1px solid var(--line);border-radius:14px;background:#fff}
-.tl .left{font-size:12px;font-weight:800;color:#1d4ed8}
-.tl .right{font-size:12px;color:var(--sub);line-height:1.8}
-.case-grid{display:grid;grid-template-columns:320px 1fr;gap:16px}
-.case-box{padding:16px;border-radius:16px;background:#f8fbff;border:1px solid var(--line)}
-.case-box h4{font-size:13px;margin-bottom:8px}
-.case-box p,.case-box li{font-size:12px;color:var(--sub);line-height:1.8}
-.case-box ul{padding-left:18px}
-.small{font-size:11px;color:var(--sub)}
-@media(max-width:1480px){.grid.kpi{grid-template-columns:repeat(3,1fr)}.grid.two,.grid.equal,.board,.tree,.hero-grid,.case-grid{grid-template-columns:1fr}.metric-grid,.release-grid{grid-template-columns:repeat(2,1fr)}.flow{grid-template-columns:1fr 1fr}.flow .step:after{display:none}.matrix{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:980px){.side{position:static;width:100%;height:auto}.header{position:static;left:0;height:auto;padding:14px 18px;flex-direction:column;align-items:flex-start;gap:8px}.main{margin-left:0;padding:18px}.grid.kpi,.grid.three,.metric-grid,.release-grid,.ai-grid,.matrix,.flow,.control{grid-template-columns:1fr}.hero h2{font-size:20px}}
+.attrib-insight{padding:14px 16px;border-radius:14px;background:linear-gradient(135deg,#eff6ff,#f0f9ff);border:1px solid #bfdbfe}
+.attrib-insight h4{font-size:13px;margin-bottom:6px;color:var(--blue2)}.attrib-insight p{font-size:12px;line-height:1.9;color:#334155}
+.attrib-action{padding:12px 16px;border-radius:14px;background:#fff7ed;border:1px solid #fed7aa}
+.attrib-action h4{font-size:13px;margin-bottom:6px;color:#b45309}.attrib-action p{font-size:12px;line-height:1.9;color:#9a3412}
+.finding{padding:12px 16px;border-radius:14px;border:1px solid var(--line);margin-bottom:10px;background:#fff}
+.finding.risk{border-left:4px solid var(--red);background:#fef2f2}.finding.watch{border-left:4px solid var(--orange);background:#fffbeb}
+.finding.good{border-left:4px solid var(--green);background:#f0fdf4}.finding.insight{border-left:4px solid var(--purple);background:#faf5ff}
+.finding h5{font-size:13px;margin-bottom:4px}.finding p{font-size:12px;color:var(--sub);line-height:1.8}
+.strategy-timeline{position:relative;padding-left:0}
+.strat-row{display:grid;grid-template-columns:120px 1fr;gap:12px;margin-bottom:12px;align-items:stretch}
+.strat-phase{padding:10px 12px;border-radius:12px;font-size:13px;font-weight:800;text-align:center;display:flex;align-items:center;justify-content:center}
+.strat-content{padding:12px;border-radius:12px;border:1px solid var(--line);background:#fff}
+.strat-content h5{font-size:13px;margin-bottom:6px}.strat-content p{font-size:12px;color:var(--sub);line-height:1.8}
+.strat-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.strat-tag{padding:4px 8px;border-radius:6px;font-size:11px;font-weight:600}
+.strat-tag.green{background:#d1fae5;color:#047857}.strat-tag.orange{background:#fef3c7;color:#b45309}.strat-tag.red{background:#fee2e2;color:#b91c1c}.strat-tag.blue{background:#dbeafe;color:#1d4ed8}.strat-tag.purple{background:#f3e8ff;color:#7c3aed}
+.chat-container{max-height:500px;overflow-y:auto;padding:12px;border:1px solid var(--line);border-radius:14px;background:#f8fbff}
+.chat-msg{margin-bottom:12px;display:flex;gap:10px}
+.chat-msg.user{flex-direction:row-reverse}
+.chat-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.chat-msg.bot .chat-avatar{background:#dbeafe}.chat-msg.user .chat-avatar{background:#e0e7ff}
+.chat-bubble{max-width:80%;padding:12px 16px;border-radius:14px;font-size:12px;line-height:1.85}
+.chat-msg.bot .chat-bubble{background:#fff;border:1px solid var(--line)}.chat-msg.user .chat-bubble{background:#2563eb;color:#fff}
+.chat-input{display:flex;gap:8px;margin-top:12px}
+.chat-input input{flex:1;padding:10px 14px;border:1px solid var(--line);border-radius:10px;font-size:13px;background:#fff}
+.chat-input button{padding:10px 18px;border:none;border-radius:10px;background:var(--blue);color:#fff;font-size:13px;font-weight:700;cursor:pointer}
+.chat-input button:hover{background:var(--blue2)}
+.quick-q{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.quick-q span{padding:6px 12px;border-radius:999px;border:1px solid #bfdbfe;background:#eff6ff;font-size:11px;cursor:pointer;color:var(--blue2);transition:.2s}
+.quick-q span:hover{background:var(--blue);color:#fff}
+@media(max-width:1480px){.grid.kpi{grid-template-columns:repeat(3,1fr)}.grid.two,.grid.equal{grid-template-columns:1fr}.metric-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:980px){.side{position:static;width:100%;height:auto}.header{position:static;left:0}.main{margin-left:0;padding:18px}.grid.kpi,.grid.three,.metric-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="side">
-  <div class="brand">
-    <h1>🧭 贷后策略运营平台 v3.0</h1>
-    <p>方向A增强版<br>重点强化：配置、灰度、归因、AI交互、客群 drill-down</p>
-  </div>
-  <div class="nav">
-    <div class="nav-group">经营总览</div>
-    <div class="nav-item active" onclick="switchPage('control',this)">🏠 经营控制台</div>
-    <div class="nav-item" onclick="switchPage('value',this)">🎯 价值目标树</div>
-    <div class="nav-group">核心经营</div>
-    <div class="nav-item" onclick="switchPage('short',this)">⚡ 短逾期运营台</div>
-    <div class="nav-item" onclick="switchPage('long',this)">🤝 协商经营中心</div>
-    <div class="nav-item" onclick="switchPage('risk',this)">🛡️ 风险与客诉中枢</div>
-    <div class="nav-group">策略与执行</div>
-    <div class="nav-item" onclick="switchPage('lab',this)">🧩 策略实验室</div>
-    <div class="nav-item" onclick="switchPage('release',this)">🚦 变更发布驾驶舱</div>
-    <div class="nav-item" onclick="switchPage('case360',this)">👤 用户 360 视图</div>
-    <div class="nav-item" onclick="switchPage('ai',this)">🤖 AI 经营副驾</div>
-    <div class="nav-group">深度归因</div>
-    <div class="nav-item" onclick="switchPage('attrib',this)">🔍 回款归因分析</div>
-  </div>
-  <div class="side-foot">mock 数据仅用于展示价值<br>你可以直观看到：发现问题 → 定位原因 → 调整策略 → 评估效果</div>
+<div class="brand">
+<h1>🧭 贷后策略运营平台 v4.0</h1>
+<p>分付贷后管理<br>异动归因 → 客群拆解 → 策略执行 → AI虚拟员工</p>
 </div>
-
+<div class="nav">
+<div class="nav-group">核心分析</div>
+<div class="nav-item active" onclick="go('p1',this)">📊 指标异动归因总结</div>
+<div class="nav-item" onclick="go('p2',this)">👥 客群维度拆解分析</div>
+<div class="nav-group">策略管理</div>
+<div class="nav-item" onclick="go('p3',this)">⚙️ 策略与执行管理</div>
+<div class="nav-group">智能助手</div>
+<div class="nav-item" onclick="go('p4',this)">🤖 贷后数据分析虚拟员工</div>
+</div>
+<div class="side-foot">数据周期：2024/11-2025/04<br>mock 数据用于展示分析框架</div>
+</div>
 <div class="header">
-  <div class="path">贷后策略运营平台 / <b id="pageTitle">经营控制台</b></div>
-  <div class="head-meta">
-    <span class="badge blue">2026年4月 增强版</span>
-    <span class="badge green">mock 数据至 2026/04</span>
-    <span>基于微信生态消费贷/现金贷贷后场景</span>
-  </div>
+<div class="path">贷后运营策略管理平台 / <b id="pageTitle">指标异动归因总结</b></div>
+<div class="head-meta"><span class="badge blue">2026年4月 v4.0</span><span class="badge green">mock 数据</span></div>
 </div>
-
 <div class="main" id="main"></div>
-
 <script>
-const charts = {};
-const pageName = {
-  control:'经营控制台',
-  value:'价值目标树',
-  short:'短逾期运营台',
-  long:'协商经营中心',
-  risk:'风险与客诉中枢',
-  lab:'策略实验室',
-  release:'变更发布驾驶舱',
-  case360:'用户 360 视图',
-  ai:'AI 经营副驾',
-  attrib:'回款归因分析'
+const charts={};
+const PN={p1:'指标异动归因总结',p2:'客群维度拆解分析',p3:'策略与执行管理',p4:'贷后数据分析虚拟员工'};
+const app={page:'p1',dim:'risk',sub:0,seg:'普通用户',chatMsgs:[]};
+const M=['24/11','24/12','25/01','25/02','25/03','25/04'];
+const D={
+kpis:[
+{l:'M1催回率',v:'95.35%',c:'-0.42pp',t:'bad',s:[96.18,96.02,95.88,95.72,95.77,95.35]},
+{l:'M2催回率',v:'39.52%',c:'-1.24pp',t:'bad',s:[42.56,41.88,41.12,40.84,40.76,39.52]},
+{l:'入催率',v:'4.35%',c:'+0.28pp',t:'bad',s:[3.82,3.94,4.02,4.08,4.07,4.35]},
+{l:'整体催回率',v:'97.39%',c:'-0.18pp',t:'bad',s:[97.84,97.72,97.62,97.58,97.57,97.39]},
+{l:'协商履约率',v:'71.6%',c:'+2.3pp',t:'good',s:[64.6,66.2,67.4,69.1,69.8,71.6]},
+{l:'贷后类客诉率',v:'0.23%',c:'+0.04pp',t:'bad',s:[0.17,0.18,0.19,0.21,0.19,0.23]}
+],
+anomalies:[
+{title:'C卡高风险用户D15-D30催回率环比下降4.2pp，直接拖累整体M1催回率下降约1pp',level:'red',
+dims:'风险等级(C卡7-10级) × 逾期阶段(D15-D30) × 借款金额(>1万)',
+root:'C卡7-10级客群入催率从5.8%升至7.93%（+2.13pp），该群体D15-D30阶段催回率从33.1%降至28.9%（-4.2pp）。交叉分析显示，大金额（>1万）C卡高风险用户催回率仅24.6%，拖累最为严重。客群结构变迁：C卡高风险入催占比从18.4%升至23.26%，余额占比更是高达31.2%。',
+impact:'影响M1催回率约-1.0pp，影响余额约¥3.2亿',
+action:'① C卡7-10级大金额用户D15后前置支付限制+协商入口；② 该客群D1-D5增加晚间补扣覆盖；③ 监控入催率结构变化预警'},
+{title:'大金额用户(>2万)首逾扣款成功率环比下降3.6pp，扣款断点扩大',level:'red',
+dims:'借款金额(>2万) × 逾期阶段(D1-D5) × 扣款渠道',
+root:'2万+客群D1-D5扣款成功率从72.4%降至68.8%（-3.6pp），核心原因是零钱余额不足占比从38%升至46%，叠加晚间补扣未覆盖该客群。该群体入催率7.62%，但人均逾期金额¥24,680，单户损失高。',
+impact:'影响短逾期回收率约-0.5pp，影响余额约¥1.8亿',
+action:'① 大金额用户优先开通晚间补扣+自然人账户扣款；② 首逾D1提醒增加还款金额拆分引导；③ D3未回款触发支付限制灰度'},
+{title:'18-24岁客群M1催回率持续下滑，环比-1.4pp，连续3个月恶化',level:'orange',
+dims:'年龄段(18-24岁) × 城市等级(三线及以下) × 借款次数(6次+)',
+root:'18-24岁客群催回率仅81.2%，交叉三线及以下城市后降至76.8%，再叠加6次以上借款历史降至71.4%。核心问题：年轻下沉市场多次借贷用户还款意愿弱+收入不稳定+多头借贷严重。该交叉客群用户数约12.4万，余额约¥14.8亿。',
+impact:'影响整体催回率约-0.3pp',
+action:'① 该交叉客群提前进入强提醒+限制灰度组合；② 测试短视频渠道还款教育内容；③ 6次+借贷用户前置协商入口'},
+{title:'协商进件上涨18%但高风险大金额复逾率仍高于大盘6.4pp',level:'orange',
+dims:'协商状态 × 风险等级(高风险) × 金额段(>1.5万)',
+root:'协商进件量4周上涨18%表明用户还款意愿在改善，但高风险大金额客群的协商后二次逾期率达28.6%，远高于大盘平均22.2%。方案分层不够细，客服/agent/人工电催承接队列未统一。',
+impact:'高风险大金额协商用户约8,430人，复逾影响约¥2.4亿',
+action:'① 上线协商准入规则+方案分层（标准分期/减免/延期）；② 高风险大金额设专案人工跟踪；③ 履约预警T+3天触发'},
+{title:'征信/外呼类敏感投诉48件，环比+23%，集中在D30+高风险大金额',level:'red',
+dims:'投诉类型(敏感) × 逾期阶段(D30+) × 风险等级(高风险)',
+root:'敏感投诉集中在D30+阶段的高风险大金额客群，占比44%。根因：征信上报解释链路不足（用户不理解征信报送规则）、外呼话术版本不统一（不同坐席话术差异大）、敏感动作缺少审批留痕。',
+impact:'监管风险敞口扩大，影响品牌声誉',
+action:'① 上线敏感动作看板+话术审计+审批留痕；② 征信上报前增加用户提前告知和解释环节；③ 高风险大金额专案先行治理'}
+],
+trendData:{
+m1:[96.18,96.02,95.88,95.72,95.77,95.35],
+m2:[42.56,41.88,41.12,40.84,40.76,39.52],
+inflow:[3.82,3.94,4.02,4.08,4.07,4.35]
+},
+contribData:[
+{name:'C卡高风险D15-D30',value:32},
+{name:'大金额扣款断点',value:24},
+{name:'年轻下沉客群恶化',value:18},
+{name:'协商复逾偏高',value:14},
+{name:'敏感投诉治理不足',value:12}
+],
+// 第2页 客群维度数据
+dims:[
+{key:'risk',icon:'🛡️',name:'风险等级(B/C卡)',
+subs:[
+{name:'B/C卡等级拆解',
+kpis:[{l:'C卡7-10级入催率',v:'7.93%',c:'+2.13pp',t:'bad'},{l:'B卡1-3级M1催回率',v:'97.82%',c:'-0.12pp',t:'good'},{l:'C卡高等级余额占比',v:'23.26%',c:'+1.8pp',t:'bad'},{l:'B/C卡催回率落差',v:'5.67pp',c:'扩大中',t:'bad'}],
+table:{cols:['风险等级','入催率','M1催回率','M2催回率','贷后整体','入催占比','人均在贷'],
+rows:[['B卡1-3级','2.15%','97.82%','48.56%','98.85%','8.52%','¥1,856'],['B卡4-6级','3.42%','96.45%','42.31%','97.92%','18.35%','¥2,845'],['B卡7-10级','5.18%','94.31%','35.12%','96.45%','12.46%','¥4,523'],['C卡1-3级','3.85%','96.12%','40.23%','97.68%','15.23%','¥3,215'],['C卡4-6级','5.62%','94.58%','34.56%','96.52%','22.18%','¥5,128'],['C卡7-10级','7.93%','92.15%','28.91%','94.83%','23.26%','¥7,856']]},
+chartType:'bar',chartLabels:['B卡1-3','B卡4-6','B卡7-10','C卡1-3','C卡4-6','C卡7-10'],chartSeries:[2.15,3.42,5.18,3.85,5.62,7.93],
+pieSeries:[{name:'B卡1-3',value:8.52},{name:'B卡4-6',value:18.35},{name:'B卡7-10',value:12.46},{name:'C卡1-3',value:15.23},{name:'C卡4-6',value:22.18},{name:'C卡7-10',value:23.26}],
+findings:[
+{type:'risk',text:'C卡高等级（7-10级）入催率7.93%，是B卡1-3级的3.7倍，且入催占比从21.4%升至23.26%，结构性恶化明显。'},
+{type:'watch',text:'B卡7-10级与C卡4-6级表现趋近（入催率差距仅0.44pp），存在风险等级"模糊地带"。'},
+{type:'insight',text:'C卡高等级人均在贷¥7,856，是B卡低等级的4.2倍，余额集中度高导致催回率波动对整体影响放大。'}
+],
+crossInsight:'**交叉维度发现：C卡7-10级 × 大金额(>1万) × D15-D30阶段** 是M1催回率下降的最大单一驱动因素。该交叉客群约5.2万人、余额¥18.6亿，D15-D30催回率仅24.6%（大盘41.6%），环比-5.8pp。建议：该客群D15后立即触发支付限制+协商前置+人工评估三重机制。'
+}]},
+{key:'user',icon:'👤',name:'用户特征',
+subs:[
+{name:'年龄段分布',
+kpis:[{l:'18-24岁催回率',v:'81.2%',c:'-1.4pp',t:'bad'},{l:'35-44岁催回率',v:'94.8%',c:'+0.2pp',t:'good'},{l:'25-34岁余额占比',v:'42.1%',c:'最大影响面',t:'bad'},{l:'年龄段最大落差',v:'13.6pp',c:'18-24 vs 35-44',t:'bad'}],
+table:{cols:['年龄段','用户数(万)','催回率','MoM','余额(亿)','入催率','人均借款'],
+rows:[['18-24岁','86.4','81.2%','-1.4pp','82.6','5.84%','¥9,560'],['25-34岁','142.8','88.6%','-0.8pp','248.2','3.62%','¥17,380'],['35-44岁','68.2','94.8%','+0.2pp','186.4','1.84%','¥27,330'],['45-54岁','32.6','92.1%','-0.3pp','84.8','2.42%','¥26,010'],['55岁+','8.4','89.4%','+0.1pp','18.6','2.96%','¥22,140']]},
+chartType:'bar',chartLabels:['18-24','25-34','35-44','45-54','55+'],chartSeries:[81.2,88.6,94.8,92.1,89.4],
+pieSeries:[{name:'18-24岁',value:28.6},{name:'25-34岁',value:38.2},{name:'35-44岁',value:10.2},{name:'45-54岁',value:16.4},{name:'55+',value:6.6}],
+findings:[
+{type:'risk',text:'18-24岁催回率仅81.2%且连续3月恶化（-1.4pp），用户量大（86.4万），是回款下降第二大贡献群体。'},
+{type:'watch',text:'25-34岁虽催回率88.6%尚可，但余额占比42.1%，-0.8pp的MoM下滑对整体影响面最广。'},
+{type:'good',text:'35-44岁催回率94.8%（+0.2pp），是回款稳定基本盘，可作为策略"安全锚"。'}
+],
+crossInsight:'**交叉维度发现：18-24岁 × 三线及以下 × 6次+借款** 催回率仅71.4%，该三维交叉客群约12.4万人。年轻+下沉+多次借贷三因素叠加导致还款优先级极低。建议：该客群统一进入强提醒+支付限制+D15前置协商的组合策略。'
+},
+{name:'城市等级分布',
+kpis:[{l:'一线城市催回率',v:'93.4%',c:'+0.1pp',t:'good'},{l:'四线及以下',v:'82.4%',c:'-1.6pp',t:'bad'},{l:'一线vs四线落差',v:'11pp',c:'持续扩大',t:'bad'},{l:'下沉市场回款贡献',v:'61.2%',c:'回款下降占比',t:'bad'}],
+table:{cols:['城市等级','用户数(万)','催回率','MoM','余额(亿)','入催率'],
+rows:[['一线','62.4','93.4%','+0.1pp','168.2','1.64%'],['新一线','84.6','91.8%','-0.2pp','212.4','2.18%'],['二线','96.8','90.2%','-0.4pp','148.6','2.84%'],['三线','58.2','86.1%','-0.8pp','62.8','3.96%'],['四线及以下','36.4','82.4%','-1.6pp','28.6','5.42%']]},
+chartType:'bar',chartLabels:['一线','新一线','二线','三线','四线+'],chartSeries:[93.4,91.8,90.2,86.1,82.4],
+pieSeries:[{name:'四线+',value:32.4},{name:'三线',value:28.8},{name:'二线',value:22.1},{name:'新一线',value:10.4},{name:'一线',value:6.3}],
+findings:[
+{type:'risk',text:'四线及以下城市催回率82.4%（MoM -1.6pp），与一线差距达11pp，下沉市场贡献了61.2%的回款下降。'},
+{type:'insight',text:'下沉市场用户占27.9%但入催率5.42%，是一线的3.3倍，触达效果和扣款成功率均偏低。'}
+],
+crossInsight:'**交叉维度发现：四线及以下 × C卡高风险 × 大金额** 催回率仅68.2%，是全平台最差交叉群体。该群体虽然用户数仅2.8万，但人均在贷¥12,400，余额集中度高。建议：该客群D1起即进入强策略通道。'
+}]},
+{key:'loan',icon:'💰',name:'借款情况',
+subs:[
+{name:'借款金额段',
+kpis:[{l:'>2万催回率',v:'76.4%',c:'-2.8pp',t:'bad'},{l:'<5千催回率',v:'94.6%',c:'+0.1pp',t:'good'},{l:'大金额余额占比',v:'52.3%',c:'+1.8pp',t:'bad'},{l:'金额梯度落差',v:'18.2pp',c:'<5k vs >2w',t:'bad'}],
+table:{cols:['金额段','用户数(万)','催回率','MoM','余额(亿)','入催率','人均逾期'],
+rows:[['<2千','48.6','96.8%','+0.2pp','6.2','0.84%','¥1,420'],['2千-5千','82.4','93.2%','+0.0pp','28.4','1.96%','¥3,680'],['5千-1万','96.8','90.4%','-0.3pp','72.6','3.12%','¥7,240'],['1万-1.5万','64.2','87.6%','-0.8pp','82.4','4.28%','¥12,860'],['1.5万-2万','32.4','81.2%','-1.6pp','56.8','5.84%','¥17,420'],['2万+','14.2','76.4%','-2.8pp','74.2','7.62%','¥24,680']]},
+chartType:'bar',chartLabels:['<2k','2-5k','5k-1w','1-1.5w','1.5-2w','2w+'],chartSeries:[96.8,93.2,90.4,87.6,81.2,76.4],
+pieSeries:[{name:'2万+',value:34.6},{name:'1.5-2万',value:24.8},{name:'1-1.5万',value:18.4},{name:'5k-1万',value:12.6},{name:'<5千',value:9.6}],
+findings:[
+{type:'risk',text:'2万+客群催回率76.4%（MoM -2.8pp），仅占用户4.2%但余额占23.1%，是回款下降的首要金额维度驱动。'},
+{type:'watch',text:'1.5万+合计余额占比52.3%（+1.8pp），大金额结构性占比在扩大，拉低整体催回率。'}
+],
+crossInsight:'**交叉维度发现：2万+ × C卡7-10级 × 历史逾期2次+** 催回率仅62.4%，该三维交叉客群约3.6万人、余额¥28.4亿。建议：该客群应跳过常规催收流程，D1即进入专案人工池。'
+}]},
+{key:'overdue',icon:'📊',name:'历史逾期情况',
+subs:[
+{name:'历史逾期次数',
+kpis:[{l:'首逾用户催回率',v:'89.2%',c:'-0.4pp',t:'bad'},{l:'4次+催回率',v:'68.2%',c:'-2.1pp',t:'bad'},{l:'多次逾期用户占比',v:'37.6%',c:'+1.2pp',t:'bad'},{l:'首逾vs4次+落差',v:'21pp',c:'显著分化',t:'bad'}],
+table:{cols:['逾期次数','用户数(万)','催回率','MoM','余额(亿)','入催率','平均DPD'],
+rows:[['首次','186.4','89.2%','-0.4pp','248.6','2.84%','4.2天'],['第2次','68.2','82.4%','-0.8pp','124.8','4.96%','8.6天'],['第3次','32.6','76.8%','-1.2pp','68.4','6.84%','14.2天'],['4次+','18.4','68.2%','-2.1pp','42.8','8.62%','22.8天']]},
+chartType:'bar',chartLabels:['首次','2次','3次','4次+'],chartSeries:[89.2,82.4,76.8,68.2],
+pieSeries:[{name:'4次+',value:34.2},{name:'3次',value:28.4},{name:'2次',value:22.6},{name:'首次',value:14.8}],
+findings:[
+{type:'risk',text:'4次+逾期客群催回率仅68.2%（MoM -2.1pp），平均DPD 22.8天，是回款下降的核心驱动群体。'},
+{type:'watch',text:'多次逾期用户占比从36.4%升至37.6%，客群风险结构持续恶化。'}
+],
+crossInsight:'**交叉维度发现：4次+逾期 × 外部负债7笔+ × 征信评分<650** 催回率仅54.8%，该群体约6.2万人。多次逾期+多头借贷+低征信评分三重风险叠加，催收ROI极低。建议：该客群转入法务/核销评估通道。'
+},
+{name:'OH历史逾期最长天数',
+kpis:[{l:'未逾期用户',v:'2174.7万',c:'占73.80%',t:'good'},{l:'M2+客群',v:'65.5万',c:'余额¥27.69亿',t:'bad'},{l:'入催率倍数',v:'22.4x',c:'M2+ vs 未逾期',t:'bad'},{l:'余额集中度',v:'前3档92.7%',c:'高度集中',t:'bad'}],
+table:{cols:['逾期档位','用户数(万)','用户占比','余额(亿)','余额占比','入催率','数据源'],
+rows:[['未逾期','2174.7','73.80%','486.2','56.28%','0.84%','OH表'],['1-3天','413.8','14.05%','186.4','21.58%','3.62%','OH表'],['4-7天','127.0','4.31%','62.8','7.27%','6.84%','OH表'],['8-15天','93.6','3.18%','48.6','5.63%','9.42%','OH表'],['16-30天','46.2','1.57%','32.4','3.75%','12.86%','OH表'],['M2','25.6','0.87%','18.2','2.11%','15.42%','OH表'],['M2+','65.5','2.22%','27.69','3.21%','18.84%','OH表']]},
+chartType:'bar',chartLabels:['未逾期','1-3天','4-7天','8-15天','16-30天','M2','M2+'],chartSeries:[0.84,3.62,6.84,9.42,12.86,15.42,18.84],
+pieSeries:[{name:'未逾期',value:56.3},{name:'1-3天',value:21.6},{name:'4-7天',value:7.3},{name:'8-15天',value:5.6},{name:'16天+',value:9.2}],
+findings:[
+{type:'good',text:'73.8%用户历史未逾期，入催率仅0.84%，是回款基本盘，无需强干预。'},
+{type:'risk',text:'M2+客群65.5万人入催率18.84%，是未逾期的22.4倍，且余额¥27.69亿。'}
+],
+crossInsight:'**交叉维度发现：OH M2+ × C卡高风险 × 大金额** 入催率高达28.6%，该群体约4.8万人、余额¥16.2亿。历史深度逾期+当前高风险是最强的催回率预测因子。建议：该客群纳入高优先级专案管理。'
+}]},
+{key:'credit',icon:'🏛️',name:'人行借还情况',
+subs:[
+{name:'外部负债笔数',
+kpis:[{l:'0笔催回率',v:'94.8%',c:'+0.1pp',t:'good'},{l:'7笔+催回率',v:'72.4%',c:'-2.8pp',t:'bad'},{l:'共债指数相关性',v:'R²=0.94',c:'强负相关',t:'bad'},{l:'多头借贷占比',v:'37.8%',c:'4笔+用户',t:'bad'}],
+table:{cols:['外部负债笔数','用户数(万)','催回率','MoM','余额(亿)','入催率','共债指数'],
+rows:[['0笔','68.4','94.8%','+0.1pp','86.2','1.24%','0'],['1-3笔','142.6','90.4%','-0.3pp','268.4','2.68%','1.8'],['4-6笔','86.2','82.6%','-1.4pp','168.2','5.24%','4.2'],['7-10笔','32.4','76.2%','-2.1pp','68.4','7.42%','7.6'],['10笔+','8.8','64.8%','-3.6pp','29.4','11.84%','12.4']]},
+chartType:'bar',chartLabels:['0笔','1-3笔','4-6笔','7-10笔','10+笔'],chartSeries:[94.8,90.4,82.6,76.2,64.8],
+pieSeries:[{name:'4-6笔',value:32.4},{name:'7-10笔',value:24.6},{name:'10+笔',value:18.2},{name:'1-3笔',value:16.4},{name:'0笔',value:8.4}],
+findings:[
+{type:'risk',text:'7笔以上外部负债客群催回率<77%，10笔+仅64.8%（MoM -3.6pp），多头借贷是催回率最强负面预测因子。'},
+{type:'insight',text:'共债指数与催回率相关系数R²=0.94，可作为客群分层的核心输入特征。'}
+],
+crossInsight:'**交叉维度发现：外部负债7笔+ × 征信评分<650 × 近6月查询10次+** 催回率仅52.4%，该三重多头信号客群约4.8万人。建议：贷中即标记高风险标签，贷后D1进入专案通道。'
+}]},
+{key:'special',icon:'🏷️',name:'专项客群标签',
+subs:[
+{name:'项目标签拆解',
+kpis:[{l:'有提现在贷',v:'催回率86.4%',c:'-0.8pp',t:'bad'},{l:'定价高风险',v:'催回率78.2%',c:'-1.6pp',t:'bad'},{l:'易诉客群',v:'催回率84.6%',c:'-0.4pp',t:'bad'},{l:'无特殊标签',v:'催回率94.2%',c:'+0.1pp',t:'good'}],
+table:{cols:['标签','用户数(万)','催回率','MoM','余额(亿)','入催率','投诉率'],
+rows:[['有提现在贷','124.6','86.4%','-0.8pp','286.4','4.62%','0.18%'],['定价高风险','48.2','78.2%','-1.6pp','126.8','6.84%','0.32%'],['易诉客群','32.4','84.6%','-0.4pp','68.2','3.96%','0.48%'],['多标签交叉','18.6','72.4%','-2.4pp','54.6','8.12%','0.56%'],['无标签','114.6','94.2%','+0.1pp','84.6','1.24%','0.08%']]},
+chartType:'bar',chartLabels:['有提现在贷','定价高风险','易诉','多标签交叉','无标签'],chartSeries:[86.4,78.2,84.6,72.4,94.2],
+pieSeries:[{name:'有提现在贷',value:32},{name:'定价高风险',value:28},{name:'易诉',value:16},{name:'多标签交叉',value:14},{name:'无标签',value:10}],
+findings:[
+{type:'risk',text:'多标签交叉客群（同时命中多个风险标签）催回率仅72.4%（MoM -2.4pp），投诉率0.56%，催收难度和投诉风险双高。'},
+{type:'watch',text:'定价高风险客群催回率78.2%（-1.6pp），该标签与C卡高风险高度重叠（重叠率68%）。'}
+],
+crossInsight:'**交叉维度发现：定价高风险 × C卡7-10级** 重叠率68%，说明贷中定价模型已识别的高风险与贷后实际表现高度一致。建议：利用贷中标签前置贷后策略差异化配置。'
+}]}
+],
+// 第3页 策略数据
+segs:{
+'普通用户':{
+phases:[
+{stage:'D1-D15',color:'#dbeafe',fontColor:'#1d4ed8',
+general:['红点+消息提醒（微信内触达）','本号扣款（零钱/储蓄卡轮询扣款）'],
+special:[],
+metrics:{d1_15:'88.1%',d16_30:'—',d30_60:'—',d61:'—'},
+history:[[88.4,88.2,88.0,87.8,88.2,88.1],[null,null,null,null,null,null],[null,null,null,null,null,null],[null,null,null,null,null,null]]},
+{stage:'D16-D30',color:'#fef3c7',fontColor:'#b45309',
+general:['加强提醒频次','二轮扣款'],
+special:['轻度支付限制灰度（仅限复逾）'],
+metrics:{d1_15:'—',d16_30:'72.4%',d30_60:'—',d61:'—'},
+history:[[null,null,null,null,null,null],[73.8,73.2,72.8,72.6,72.8,72.4],[null,null,null,null,null,null],[null,null,null,null,null,null]]},
+{stage:'D30-D60',color:'#fee2e2',fontColor:'#b91c1c',
+general:['协商入口引导','Agent外呼'],
+special:['征信上报预告'],
+metrics:{d1_15:'—',d16_30:'—',d30_60:'41.2%',d61:'—'},
+history:[[null,null,null,null,null,null],[null,null,null,null,null,null],[42.8,42.2,41.8,41.4,41.6,41.2],[null,null,null,null,null,null]]},
+{stage:'D61+',color:'#f3e8ff',fontColor:'#7c3aed',
+general:['持续协商','法务评估'],
+special:['律师函（需审批）'],
+metrics:{d1_15:'—',d16_30:'—',d30_60:'—',d61:'24.8%'},
+history:[[null,null,null,null,null,null],[null,null,null,null,null,null],[null,null,null,null,null,null],[25.4,25.2,25.0,24.8,24.8,24.8]]}
+],
+summary:'普通用户催收以轻提醒+扣款为主，D30前不宜过度施压。当前D16-D30阶段催回率72.4%环比小幅下滑，主要原因是二轮扣款覆盖不足。建议增加晚间补扣批次。',
+trend_finding:'D1-D15阶段催回率基本稳定（88.1%），D16-D30小幅走弱（-0.4pp），核心是扣款断点，非触达问题。'
+},
+'大金额用户':{
+phases:[
+{stage:'D1-D15',color:'#dbeafe',fontColor:'#1d4ed8',
+general:['红点+强化消息提醒','本号扣款+晚间补扣'],
+special:['自然人账户补扣','还款金额拆分引导'],
+metrics:{d1_15:'79.2%',d16_30:'—',d30_60:'—',d61:'—'},
+history:[[81.4,80.8,80.2,79.8,79.6,79.2],[null,null,null,null,null,null],[null,null,null,null,null,null],[null,null,null,null,null,null]]},
+{stage:'D16-D30',color:'#fef3c7',fontColor:'#b45309',
+general:['支付限制灰度','二轮扣款+Agent外呼'],
+special:['协商入口前置','专案人工评估'],
+metrics:{d1_15:'—',d16_30:'58.6%',d30_60:'—',d61:'—'},
+history:[[null,null,null,null,null,null],[62.4,61.2,60.4,59.8,59.2,58.6],[null,null,null,null,null,null],[null,null,null,null,null,null]]},
+{stage:'D30-D60',color:'#fee2e2',fontColor:'#b91c1c',
+general:['协商方案库（标准分期/减免/延期）','人工电催'],
+special:['征信上报（需审批+提前告知）','商事调解'],
+metrics:{d1_15:'—',d16_30:'—',d30_60:'32.4%',d61:'—'},
+history:[[null,null,null,null,null,null],[null,null,null,null,null,null],[35.6,34.8,34.0,33.2,32.8,32.4],[null,null,null,null,null,null]]},
+{stage:'D61+',color:'#f3e8ff',fontColor:'#7c3aed',
+general:['法务升级通道','核销评估'],
+special:['律师函+法诉（需审批留痕）'],
+metrics:{d1_15:'—',d16_30:'—',d30_60:'—',d61:'18.6%'},
+history:[[null,null,null,null,null,null],[null,null,null,null,null,null],[null,null,null,null,null,null],[19.8,19.4,19.0,18.8,18.8,18.6]]}
+],
+summary:'大金额用户是回款下降的主战场。D1-D15催回率79.2%已连续下滑（-2.2pp/3月），核心问题是扣款成功率下降+晚间补扣未覆盖。D16-D30催回率58.6%下滑更快（-3.8pp/3月），需前置支付限制和协商入口。',
+trend_finding:'各阶段催回率均呈下降趋势，D16-D30下降速度最快（-3.8pp/3月），是策略干预的优先窗口。扣款失败后缺乏有效承接是核心断点。'
+},
+'贷中高定价用户':{
+phases:[
+{stage:'D1-D15',color:'#dbeafe',fontColor:'#1d4ed8',
+general:['强化提醒（多轮次+差异化文案）','本号扣款+晚间补扣+自然人补扣'],
+special:['D3未回款触发支付限制灰度','贷中标签联动策略升级'],
+metrics:{d1_15:'76.8%',d16_30:'—',d30_60:'—',d61:'—'},
+history:[[80.2,79.4,78.6,77.8,77.2,76.8],[null,null,null,null,null,null],[null,null,null,null,null,null],[null,null,null,null,null,null]]},
+{stage:'D16-D30',color:'#fef3c7',fontColor:'#b45309',
+general:['支付限制全量','协商方案前置'],
+special:['专案人工池（命中率46.2%）','Agent精准外呼'],
+metrics:{d1_15:'—',d16_30:'52.4%',d30_60:'—',d61:'—'},
+history:[[null,null,null,null,null,null],[56.8,55.6,54.4,53.6,53.0,52.4],[null,null,null,null,null,null],[null,null,null,null,null,null]]},
+{stage:'D30-D60',color:'#fee2e2',fontColor:'#b91c1c',
+general:['人工电催专案','商事调解'],
+special:['征信上报（审批+告知+留痕）','定制化协商方案'],
+metrics:{d1_15:'—',d16_30:'—',d30_60:'28.6%',d61:'—'},
+history:[[null,null,null,null,null,null],[null,null,null,null,null,null],[32.4,31.2,30.4,29.6,29.0,28.6],[null,null,null,null,null,null]]},
+{stage:'D61+',color:'#f3e8ff',fontColor:'#7c3aed',
+general:['法诉评估','核销评估'],
+special:['敏感动作全量审批留痕'],
+metrics:{d1_15:'—',d16_30:'—',d30_60:'—',d61:'16.2%'},
+history:[[null,null,null,null,null,null],[null,null,null,null,null,null],[null,null,null,null,null,null],[17.8,17.2,16.8,16.4,16.4,16.2]]}
+],
+summary:'贷中高定价用户与C卡高风险重叠度68%，催收难度最高。D1-D15催回率76.8%已连续5月下滑，D16-D30仅52.4%。当前最大问题：D1-D5扣款断点未被有效补救+D15后承接动作衔接不足。',
+trend_finding:'该客群所有阶段催回率均持续下滑，D16-D30下滑速度最快（-4.4pp/3月），是投入产出比最高的干预点。但需同步监控投诉率（当前0.32%已偏高）。'
+}
+},
+// 第4页 AI Agent 数据
+agentPresets:[
+{q:'分析当前大金额用户M1催回率异动',
+answer:`## 大金额用户M1催回率异动分析报告
+
+### 一、问题背景
+本月大金额用户（>1.5万）M1催回率从上月的81.8%降至79.4%（MoM -2.4pp），连续3个月下滑，累计下降4.6pp。该客群虽仅占用户13.7%，但余额占比高达52.3%，对整体M1催回率的影响权重约为用户占比的3.8倍。
+
+### 二、问题归因（按贡献度排序）
+**1. 扣款成功率下降（贡献42%）**
+- 2万+客群D1-D5扣款成功率从72.4%降至68.8%（-3.6pp）
+- 核心原因：零钱余额不足占比从38%升至46%；晚间补扣未覆盖该客群
+- 交叉验证：C卡高风险×大金额扣款成功率更低（仅62.4%）
+
+**2. D15-D30催回率断崖（贡献28%）**
+- 大金额用户D15-D30催回率从62.4%降至58.6%（-3.8pp）
+- 核心原因：支付限制后缺乏有效承接动作；协商入口未前置
+- 交叉验证：大金额×首逾该阶段催回率64.2%尚可，大金额×复逾仅51.8%
+
+**3. 客群结构恶化（贡献18%）**
+- 大金额入催占比从18.2%升至21.4%（+3.2pp），余额结构更加集中
+- 大金额×高风险交叉客群占比从8.4%升至11.2%
+
+**4. 协商履约分层不足（贡献12%）**
+- 大金额协商进件增长22%，但二次逾期率28.6%远高于大盘
+
+### 三、解决方法与约束
+| 方案 | 预估提升 | 投诉风险 | 资源需求 | 落地周期 |
+|------|---------|---------|---------|---------|
+| A. 晚间补扣+自然人补扣覆盖 | +1.2pp | 低 | 低 | 1周 |
+| B. D15前置支付限制+协商入口 | +0.8pp | 中（需灰度） | 中 | 2周 |
+| C. 专案人工池扩容（D15+高风险大额） | +0.6pp | 低 | 高（人力） | 1周 |
+| D. 协商方案分层+履约预警 | +0.4pp | 低 | 中 | 3周 |
+
+**约束条件：** 投诉率需控制在+0.02pp以内；人工资源有限（当前专案池2,800人已满负荷）。
+
+### 四、最优方案选择建议
+推荐**组合方案 A+B+C**，预计M1催回率提升+2.2~2.6pp，将大金额催回率恢复至81%+水平：
+1. **第1周立即执行方案A**：晚间补扣覆盖大金额用户，成本低见效快
+2. **第2周灰度方案B**：大金额用户D15前置支付限制（先5%灰度→15%→全量）
+3. **同步执行方案C**：专案人工池增加D15+高风险大额case
+4. **第3周启动方案D**：作为长期改善手段
+
+预计3周内大金额M1催回率恢复至80.5%+，投诉增幅控制在+0.01pp内。`
+},
+{q:'C卡高风险客群入催率为什么持续上升',
+answer:`## C卡高风险客群入催率上升归因报告
+
+### 一、问题背景
+C卡7-10级客群入催率从24/11的5.80%持续攀升至25/04的7.93%（+2.13pp，+36.7%），连续6个月恶化。该客群入催占比从18.4%升至23.26%，成为入催结构恶化的首要驱动。
+
+### 二、问题归因
+**1. 贷中审批风险偏移（根因，贡献45%）**
+近6月C卡7-10级新增授信用户占比从12.8%升至16.4%，说明贷中审批边界在放宽，更多边际风险用户进入存量池。
+
+**2. 外部宏观环境恶化（贡献25%）**
+C卡高风险客群与下沉市场、多头借贷高度重叠。近6月该群体外部负债笔数中位数从4.2笔升至5.6笔，还款能力被稀释。
+
+**3. 存量客群风险积累（贡献20%）**
+C卡7-10级中历史逾期2次+占比从28.4%升至34.6%，老客群在逐步恶化。
+
+**4. 催收策略匹配不足（贡献10%）**
+C卡高风险在D1-D5的扣款策略与普通用户一致，未做差异化，导致首逾黄金窗口期的回收效率偏低。
+
+### 三、建议
+1. 与贷中团队协同，评估C卡7-10级审批边界是否需要收紧
+2. 贷后D1起即对C卡高风险启用差异化策略（强提醒+前置补扣+D3限制灰度）
+3. 建立入催率结构预警机制，当C卡高风险占比超过25%时自动触发review`
+},
+{q:'哪些催收手段效果在减弱',
+answer:`## 催收手段效果变化分析报告
+
+### 一、效果减弱的手段（需关注）
+
+**1. 自动扣款（首轮）— 效果显著减弱**
+- 成功率：72.0% → 68.4%（-3.6pp/6月）
+- 原因：用户零钱余额不足比例上升、银行通道限额收紧
+- 受影响客群：大金额用户、C卡高风险尤为明显
+
+**2. 微信服务通知提醒 — 效果轻微减弱**
+- 转化率：9.0% → 8.4%（-0.6pp/6月）
+- 原因：提醒疲劳效应、文案吸引力下降
+- 受影响客群：多次逾期用户疲劳最明显
+
+**3. Agent外呼 — 效果减弱**
+- 转化率：23.6% → 22.8%（-0.8pp/6月）
+- 原因：话术固化、客群匹配不够精准
+
+### 二、效果增强的手段（可扩大）
+
+**1. 支付限制灰度 — 效果持续增强**
+- 限制后回款率：12.6% → 13.0%（+0.4pp）
+- 适用：高风险+大金额客群效果最好
+
+**2. 专案人工电催 — 效果增强**
+- 命中率：31.6% → 35.1%（+3.5pp）
+- 原因：升级规则优化后案件质量提升
+
+**3. 协商专线 — 效果增强**
+- 转化率：50.6% → 52.4%（+1.8pp）
+- 原因：主动沟通用户增多
+
+### 三、建议
+核心策略：**弱化减弱手段的投入权重，扩大增强手段的覆盖面**。具体来说，减少对低效重复提醒的依赖，增加晚间补扣批次弥补扣款下滑，扩大支付限制灰度范围，并优化Agent话术。`
+}
+]
 };
-
-const app = {
-  segment:'高风险用户',
-  strategy:{segment:'高风险大金额',stage:'D1-D5',touch:'提醒强化',deduct:'晚间补扣',pressure:'支付限制灰度',manual:'24h 后升级人工'},
-  aiIndex:0,
-  caseIndex:0,
-  attribDim:'risk_level',
-  attribSub:0
-};
-
-const d = {
-  months:['24/11','24/12','25/01','25/02','25/03','25/04'],
-  controlKpis:[
-    {label:'整体催回率',value:'98.26%',change:'+0.14pp vs 上月',tone:'green',type:'good',spark:[97.84,97.93,98.02,98.12,98.19,98.26]},
-    {label:'短逾期回收率',value:'86.8%',change:'-0.7pp vs 上月',tone:'orange',type:'bad',spark:[85.8,86.2,86.6,87.3,87.5,86.8]},
-    {label:'协商履约率',value:'71.6%',change:'+2.3pp vs 上月',tone:'green',type:'good',spark:[64.6,66.2,67.4,69.1,69.8,71.6]},
-    {label:'贷后类客诉率',value:'0.23%',change:'+0.04pp vs 上月',tone:'red',type:'bad',spark:[0.17,0.18,0.19,0.21,0.19,0.23]},
-    {label:'敏感动作投诉',value:'48件',change:'+9件 vs 上月',tone:'red',type:'bad',spark:[31,34,38,41,39,48]},
-    {label:'人工升级命中率',value:'35.1%',change:'+3.5pp vs 上月',tone:'purple',type:'good',spark:[28.4,29.6,31.1,31.9,32.4,35.1]}
-  ],
-  controlIssues:[
-    {
-      level:'red',
-      title:'高风险首逾客群 D1-D5 扣款成功率回落',
-      desc:'本周高风险首逾客群扣款成功率从 29.4% 下滑到 24.8%，拖累短逾期回收率 0.7pp。',
-      reason:'零钱不足占比升高 + 晚间补扣未开启 + 首逾文案解释力不足。',
-      action:'灰度“提醒强化 + 晚间补扣 + 支付限制灰度”组合策略，优先在高风险大金额客群试点。',
-      effect:'预计短逾期回收率 +0.9pp，投诉增幅控制在 +0.01pp 内。'
-    },
-    {
-      level:'orange',
-      title:'协商量上涨但高风险大金额复逾偏高',
-      desc:'协商进件 4 周上涨 18%，但高风险大金额客群二次逾期率仍高于大盘 6.4pp。',
-      reason:'方案分层不够细；客服、agent、人工电催之间承接队列未统一。',
-      action:'上线协商准入规则、方案库、履约预警和升级转人工机制。',
-      effect:'预计履约率 +2.5pp，二次逾期率下降 1.5pp。'
-    },
-    {
-      level:'red',
-      title:'征信/外呼类敏感投诉抬头',
-      desc:'近 30 天征信/监管敏感投诉 48 件，环比上升 23%，集中在 D30+ 高风险大金额客群。',
-      reason:'敏感动作缺少审批留痕，话术版本和用户解释链路不一致。',
-      action:'上线敏感动作看板 + 话术审计 + 客诉归因，先治理高风险大金额专案。',
-      effect:'预计敏感投诉下降 20% 左右，回款贡献基本稳定。'
-    }
-  ],
-  balanceTrend:{
-    recovery:[97.84,97.93,98.02,98.12,98.19,98.26],
-    service:[73.1,74.4,75.0,75.9,76.4,77.8],
-    complaints:[162,171,188,215,203,238]
-  },
-  problemMix:[
-    {name:'扣款命中下滑',value:36},
-    {name:'协商履约分层不足',value:28},
-    {name:'敏感投诉治理不足',value:22},
-    {name:'人工升级规则粗放',value:14}
-  ],
-  valueMap:[
-    ['高催回率','守住有效动作，识别哪个动作真正在贡献回款','短逾漏斗、扣款归因、策略效果归因'],
-    ['好服务','避免“只催不管”，把提醒、协商、客服、agent连成服务链路','触达中心、协商经营中心、用户 360'],
-    ['低客诉/低监管风险','把敏感动作、外呼话术、客诉归因纳入统一治理','客诉中枢、敏感动作看板、话术审计'],
-    ['低成本高协同','把人工资源投向最值得投的案件，减少无效升级','升级规则、人工命中率、人效面板'],
-    ['可控变更','每次变更都有灰度、回滚、影响评估和复盘','策略实验室、变更发布驾驶舱']
-  ],
-  segments:{
-    '一般用户':{
-      funnel:[100,94,59,31,10,7],
-      insight:['一般用户问题不在触达，而在扣款命中率波动。','适合保持轻提醒 + 多轮扣款，不宜过早施加强限制。','平台的价值是避免“一刀切”动作伤害服务体验。'],
-      reasonLabels:['余额不足','银行卡失败','提醒疲劳','时段不佳','其他'],
-      reasonValues:[37,24,16,13,10],
-      plan:['优化前短逾回收 88.1%','优化后预估 88.6%','目标是减少无效触达，而不是单纯加压'],
-      cohort:[['新客首逾','89.1%','提醒强、扣款一般','保持轻策略'],['老客首逾','87.4%','余额不足显著','增加晚间补扣'],['低风险复逾','82.7%','读消息高但行动弱','增加还款解释入口']]
-    },
-    '高风险用户':{
-      funnel:[100,97,66,24,19,13],
-      insight:['能触达，但本号扣款命中偏低，是当前最大断点。','支付限制后回款贡献明显，应继续做灰度精细化。','平台价值是知道该先补扣款链路，而不是直接全量加压。'],
-      reasonLabels:['多账户空余额','自然人补扣未覆盖','限额失败','支付限制未灰度','其他'],
-      reasonValues:[31,26,17,15,11],
-      plan:['优化前短逾回收 78.3%','优化后预估 79.5%','投诉控制在 +0.01pp 内'],
-      cohort:[['高风险首逾','80.2%','扣款命中下滑','提醒强化 + 晚间补扣'],['高风险复逾','74.9%','限制后仍需人工承接','24h 未回款升级人工'],['高风险大金额','72.6%','自然人补扣缺失','补扣 + 灰度限制组合']]
-    },
-    '大金额用户':{
-      funnel:[100,98,71,29,21,16],
-      insight:['提醒和扣款都不差，但限制后仍有大量用户未进入有效承接。','适合与人工专案升级联动。','平台价值在于把“谁该进入人工”选得更准。'],
-      reasonLabels:['扣款失败后二轮承接缺失','解释不足导致观望','协商入口不明显','限制触发偏晚','其他'],
-      reasonValues:[29,23,18,17,13],
-      plan:['优化前短逾回收 81.2%','优化后预估 82.4%','人工命中率可提升 2.3pp'],
-      cohort:[['8k-12k','84.6%','限制触发偏晚','前置灰度'],['12k-20k','79.8%','人工承接缺失','限制后升级人工'],['20k+','73.1%','解释不足 + 观望','协商入口前置']]
-    },
-    '首逾用户':{
-      funnel:[100,95,62,27,12,9],
-      insight:['首逾的关键不是施压不够，而是提醒解释和扣款时段不够准。','首逾对支付限制较敏感，不宜过早过重。','平台价值在于找到轻量高效动作，而不是一上来做强催。'],
-      reasonLabels:['零钱不足','绑定卡失效','触达未读','凌晨扣款失败','其他'],
-      reasonValues:[34,22,18,15,11],
-      plan:['优化前短逾回收 84.7%','优化后预估 85.6%','增量来自提醒强化 + 分时补扣'],
-      cohort:[['首逾新客','83.5%','解释不足','文案升级'],['首逾老客','86.2%','扣款时段偏差','增加晚间批次'],['首逾高额度','80.9%','补扣覆盖不足','补扣 + 限制灰度']]
-    }
-  },
-  touchConfig:[
-    ['提醒模板 A','生产中','曝光 96.8%','高风险首逾点击偏低','补充“为什么现在要还”解释'],
-    ['服务通知 B','灰度 20%','转化 12.4%','一般用户容易疲劳','仅在高风险/复逾启用'],
-    ['早晨首轮扣款','生产中','命中 24.8%','高额度回落明显','叠加晚间补扣'],
-    ['晚间补扣','规划中','-','高风险未覆盖','优先灰度高风险大金额'],
-    ['支付限制灰度','15% 灰度','限制后回款 13.0%','一般用户不宜过宽','先聚焦高风险和大金额']
-  ],
-  longMetrics:[
-    {label:'在谈协商用户',value:'18,420',desc:'周环比 +11.2%，说明长逾期主动沟通意愿提升'},
-    {label:'协商履约率',value:'71.6%',desc:'方案分层开始生效，但高风险大金额仍低于大盘'},
-    {label:'二次逾期风险池',value:'2,380',desc:'高风险大金额占 41%，需重点治理'},
-    {label:'专案人工命中率',value:'42.8%',desc:'比泛人工池高 11.5pp，说明升级需精准'}
-  ],
-  negotiationTrend:[11200,12400,13250,14500,16100,18420],
-  fulfillTrend:[66.2,67.1,68.7,69.4,70.2,71.6],
-  relapseTrend:[10.5,10.2,9.9,9.5,9.1,8.6],
-  serviceTimeline:[
-    {stage:'D16-D30',desc:'微信内引导主动沟通，先由 agent/客服识别真实还款困难和协商意愿。'},
-    {stage:'D30-D60',desc:'按客群进入分层协商方案：标准分期、减免试探、延期观察。'},
-    {stage:'D60-D90',desc:'对高风险、大金额用户升级人工电催或商事调解，并保留协商通道。'},
-    {stage:'D90+',desc:'征信/律师函纳入审批链路，形成“敏感动作 + 客诉监控 + 法务留痕”闭环。'}
-  ],
-  queueTable:[
-    ['主动沟通用户','客服优先 + 快速协商','2,960','81.2%','满意度高，可扩覆盖'],
-    ['一般长逾用户','agent 承接 + 标准分期','5,180','73.4%','服务体验稳定'],
-    ['高风险大金额','人工电催 + 协商专案','8,430','39.2%','复逾仍高，需更细分层'],
-    ['失联/拒绝沟通','商事调解/法务升级','1,850','22.8%','需重点关注敏感投诉']
-  ],
-  complaints:{
-    loan:[88,92,101,115,110,128],
-    credit:[41,45,49,56,53,64],
-    regulator:[33,34,38,44,40,46],
-    actionLabels:['支付限制说明不足','征信上报争议','外呼话术争议','协商履约争议','律师函理解偏差','客服转接超时'],
-    actionValues:[18,31,42,27,19,15],
-    matrixRows:['D1-D5','D6-D15','D16-D30','D30-D60','D60+'],
-    matrixCols:['提醒','扣款','支付限制','协商','征信/律函'],
-    matrix:[
-      [2,4,5,1,0],
-      [3,5,8,2,0],
-      [2,3,7,6,2],
-      [1,2,6,9,11],
-      [0,1,3,7,14]
-    ]
-  },
-  sensitiveTable:[
-    ['征信上报','12,430','¥1,180万','17件','需审批','高风险大金额解释不足'],
-    ['律师函','4,820','¥460万','9件','需审批','模板 FAQ 需补强'],
-    ['支付限制','28,300','¥2,240万','11件','灰度中','一般用户不宜扩大'],
-    ['人工电催','9,140','¥1,020万','7件','需质检','话术版本不统一'],
-    ['商事调解','1,360','¥210万','4件','专案审批','ROI 高但链路偏长']
-  ],
-  releaseCards:[
-    {name:'v2.3 当前生产',desc:'短逾以提醒+扣款为主，D30+ 开始叠加征信与协商动作。',status:'稳定运行',cls:'stable'},
-    {name:'v2.4 灰度方案',desc:'增加短逾漏斗治理、协商经营中心、敏感动作审批。',status:'灰度 15%',cls:'gray'},
-    {name:'v2.5 目标版本',desc:'形成配置、灰度、回滚、归因、AI待办的完整闭环。',status:'规划中',cls:'plan'}
-  ],
-  releases:[
-    ['短逾高风险 D1-D5','提醒强化 + 晚间补扣 + 支付限制灰度','预计 +0.9pp','投诉控制在 +0.01pp'],
-    ['长逾 D30-D60','协商方案库 + agent 承接 + 履约预警','预计 +2.4pp','复逾率下降 1.5pp'],
-    ['敏感动作治理','审批留痕 + 客诉归因 + 话术审计','敏感投诉 -20%','回款基本稳定'],
-    ['人工升级规则','金额/风险/阶段联合升级','命中率 +3.0pp','人效提升 12%']
-  ],
-  compareBefore:[86.8,71.6,0.23,35.1],
-  compareAfter:[87.7,74.0,0.18,38.2],
-  releaseTimeline:[
-    ['04/16','提交 v2.4 灰度申请','高风险 D1-D5 组合策略上线前评估'],
-    ['04/17','灰度 5%','观察短逾回收率、投诉率、扣款命中率'],
-    ['04/20','扩容至 15%','若投诉可控，扩大到高风险大金额全量'],
-    ['04/24','复盘评估','输出收益、副作用与是否回滚结论']
-  ],
-  users:[
-    {
-      name:'用户 A / 高风险大金额',
-      profile:['额度 18,000','D36','历史逾期 2 次','近 30 天主动查看协商页 3 次'],
-      path:['D1 提醒已读','D2 扣款失败','D4 支付限制触发','D18 进入协商页未提交','D31 agent 回访','D36 建议升级人工'],
-      insight:'有沟通意愿，但对方案理解不充分。建议进入专案协商队列，而不是直接走强施压路径。',
-      next:'客服解释 + 定制分期方案 + 48h 后再判断是否升级人工电催。'
-    },
-    {
-      name:'用户 B / 首逾普通客群',
-      profile:['额度 4,000','D3','历史未逾期','零钱余额不足'],
-      path:['D1 提醒曝光','D2 扣款失败','D3 再次提醒已点击'],
-      insight:'明显属于轻量可恢复客群，不适合过早施压。',
-      next:'优先补扣和文案解释，不建议提前限制支付。'
-    },
-    {
-      name:'用户 C / 长逾失联客群',
-      profile:['额度 11,000','D94','历史逾期 4 次','近 60 天无主动沟通'],
-      path:['D30 协商未响应','D48 agent 未接通','D66 人工电催失败','D90 进入法务评估'],
-      insight:'回收可能性低但投诉敏感度高，所有敏感动作需审批留痕。',
-      next:'法务动作 + 客诉观察并行，避免无规则外呼。'
-    }
-  ],
-  attribDims:[
-    {key:'risk_level',icon:'🛡️',name:'风险等级',
-     subs:[
-       {name:'高风险客群',
-        kpis:[{l:'回款率',v:'78.3%',c:'-1.8pp',t:'bad'},{l:'用户占比',v:'22.4%',c:'+0.6pp',t:'bad'},{l:'余额占比',v:'34.7%',c:'+1.2pp',t:'bad'},{l:'入催率',v:'6.82%',c:'+0.31pp',t:'bad'}],
-        table:{cols:['子群','用户数(万)','回款率','MoM','余额(亿)','入催率','贡献度'],
-          rows:[['高风险首逾','18.6','76.2%','-2.1pp','42.8','7.21%','28.3%'],['高风险复逾','12.3','72.4%','-1.6pp','31.5','8.54%','21.6%'],['高风险大金额','8.4','68.9%','-2.8pp','48.6','9.12%','33.4%'],['高风险小金额','14.2','84.1%','-0.4pp','12.3','4.23%','16.7%']]},
-        chartData:{labels:['24/11','24/12','25/01','25/02','25/03','25/04'],series:[82.4,81.6,80.9,80.1,80.0,78.3],baseline:[81.0,81.0,81.0,81.0,81.0,81.0]},
-        contribs:[{name:'高风险大金额',pct:33.4,color:'#dc2626'},{name:'高风险首逾',pct:28.3,color:'#f97316'},{name:'高风险复逾',pct:21.6,color:'#eab308'},{name:'高风险小金额',pct:16.7,color:'#22c55e'}],
-        insight:'高风险客群回款率连续3个月下滑，核心拖累来自「高风险大金额」子群（回款率68.9%，MoM -2.8pp），该群体仅占用户22.4%但贡献了34.7%的余额和33.4%的回款下降。',
-        action:'① 高风险大金额：灰度"提醒强化+晚间补扣+支付限制"组合策略；② 高风险首逾：优化D1-D3扣款时段覆盖；③ 高风险复逾：前置协商入口，降低流入长逾期。'},
-       {name:'中风险客群',
-        kpis:[{l:'回款率',v:'89.6%',c:'-0.3pp',t:'bad'},{l:'用户占比',v:'35.2%',c:'-0.1pp',t:'good'},{l:'余额占比',v:'38.1%',c:'+0.2pp',t:'bad'},{l:'入催率',v:'3.14%',c:'+0.08pp',t:'bad'}],
-        table:{cols:['子群','用户数(万)','回款率','MoM','余额(亿)','入催率','贡献度'],
-          rows:[['中风险首逾','32.4','91.2%','-0.2pp','68.2','2.84%','18.4%'],['中风险复逾','15.8','86.4%','-0.5pp','42.6','3.96%','32.1%'],['中风险大金额','11.2','85.1%','-0.6pp','54.8','4.12%','36.2%'],['中风险小金额','24.6','93.8%','+0.1pp','18.4','1.62%','13.3%']]},
-        chartData:{labels:['24/11','24/12','25/01','25/02','25/03','25/04'],series:[90.8,90.5,90.3,90.1,89.9,89.6],baseline:[90.0,90.0,90.0,90.0,90.0,90.0]},
-        contribs:[{name:'中风险大金额',pct:36.2,color:'#dc2626'},{name:'中风险复逾',pct:32.1,color:'#f97316'},{name:'中风险首逾',pct:18.4,color:'#eab308'},{name:'中风险小金额',pct:13.3,color:'#22c55e'}],
-        insight:'中风险客群整体回款率89.6%仍在合理区间，但大金额和复逾子群出现轻微下滑（MoM -0.5~-0.6pp），需关注是否向高风险漂移。',
-        action:'① 监控中风险大金额的扣款成功率变化；② 复逾客群增加二轮提醒覆盖；③ 小金额维持当前策略不变。'},
-       {name:'低风险客群',
-        kpis:[{l:'回款率',v:'96.2%',c:'+0.1pp',t:'good'},{l:'用户占比',v:'42.4%',c:'-0.5pp',t:'bad'},{l:'余额占比',v:'27.2%',c:'-1.4pp',t:'good'},{l:'入催率',v:'0.94%',c:'-0.03pp',t:'good'}],
-        table:{cols:['子群','用户数(万)','回款率','MoM','余额(亿)','入催率','贡献度'],
-          rows:[['低风险首逾','48.2','97.1%','+0.2pp','32.4','0.72%','22.8%'],['低风险复逾','8.6','92.4%','-0.1pp','14.8','1.84%','38.6%'],['低风险大金额','6.4','93.8%','+0.0pp','28.6','1.42%','28.2%'],['低风险小金额','42.8','97.6%','+0.2pp','12.2','0.48%','10.4%']]},
-        chartData:{labels:['24/11','24/12','25/01','25/02','25/03','25/04'],series:[95.8,95.9,96.0,96.0,96.1,96.2],baseline:[96.0,96.0,96.0,96.0,96.0,96.0]},
-        contribs:[{name:'低风险复逾',pct:38.6,color:'#f97316'},{name:'低风险大金额',pct:28.2,color:'#eab308'},{name:'低风险首逾',pct:22.8,color:'#3b82f6'},{name:'低风险小金额',pct:10.4,color:'#22c55e'}],
-        insight:'低风险客群表现稳定（96.2%，MoM +0.1pp），是回款基本盘。唯一需关注的是低风险复逾子群（92.4%），建议观察但暂不干预。',
-        action:'① 维持当前轻提醒策略；② 监控低风险复逾是否进一步恶化；③ 释放更多资源到高风险治理。'}
-     ]},
-    {key:'user_profile',icon:'👤',name:'用户画像',
-     subs:[
-       {name:'年龄段分布',
-        kpis:[{l:'最差年龄段',v:'18-24岁',c:'回款率81.2%',t:'bad'},{l:'最优年龄段',v:'35-44岁',c:'回款率94.8%',t:'good'},{l:'占比最大',v:'25-34岁',c:'余额占42.1%',t:'bad'},{l:'恶化最快',v:'18-24岁',c:'-1.4pp MoM',t:'bad'}],
-        table:{cols:['年龄段','用户数(万)','回款率','MoM','余额(亿)','入催率','人均借款(元)'],
-          rows:[['18-24岁','86.4','81.2%','-1.4pp','82.6','5.84%','9,560'],['25-34岁','142.8','88.6%','-0.8pp','248.2','3.62%','17,380'],['35-44岁','68.2','94.8%','+0.2pp','186.4','1.84%','27,330'],['45-54岁','32.6','92.1%','-0.3pp','84.8','2.42%','26,010'],['55岁+','8.4','89.4%','+0.1pp','18.6','2.96%','22,140']]},
-        chartData:{labels:['18-24','25-34','35-44','45-54','55+'],series:[81.2,88.6,94.8,92.1,89.4],baseline:[90.0,90.0,90.0,90.0,90.0]},
-        contribs:[{name:'25-34岁',pct:38.2,color:'#dc2626'},{name:'18-24岁',pct:28.6,color:'#f97316'},{name:'45-54岁',pct:16.4,color:'#eab308'},{name:'35-44岁',pct:10.2,color:'#3b82f6'},{name:'55岁+',pct:6.6,color:'#22c55e'}],
-        insight:'18-24岁客群回款率仅81.2%且环比下滑最快（-1.4pp），虽然人均借款低但用户量大（86.4万）。25-34岁是余额主力（42.1%），回款下滑-0.8pp影响面最广。',
-        action:'① 18-24岁：强化首逾提醒时段（晚间+周末），测试社交化还款提醒；② 25-34岁：重点监控大金额客户扣款成功率；③ 35-44岁：作为稳定基本盘维持现策略。'},
-       {name:'城市等级分布',
-        kpis:[{l:'一线城市',v:'回款率93.4%',c:'+0.1pp',t:'good'},{l:'二线城市',v:'回款率90.2%',c:'-0.4pp',t:'bad'},{l:'三线及以下',v:'回款率84.6%',c:'-1.2pp',t:'bad'},{l:'最大落差',v:'8.8pp',c:'一线vs三线+',t:'bad'}],
-        table:{cols:['城市等级','用户数(万)','回款率','MoM','余额(亿)','入催率','人均借款(元)'],
-          rows:[['一线','62.4','93.4%','+0.1pp','168.2','1.64%','26,920'],['新一线','84.6','91.8%','-0.2pp','212.4','2.18%','25,100'],['二线','96.8','90.2%','-0.4pp','148.6','2.84%','15,350'],['三线','58.2','86.1%','-0.8pp','62.8','3.96%','10,790'],['四线及以下','36.4','82.4%','-1.6pp','28.6','5.42%','7,860']]},
-        chartData:{labels:['一线','新一线','二线','三线','四线+'],series:[93.4,91.8,90.2,86.1,82.4],baseline:[90.0,90.0,90.0,90.0,90.0]},
-        contribs:[{name:'四线及以下',pct:32.4,color:'#dc2626'},{name:'三线',pct:28.8,color:'#f97316'},{name:'二线',pct:22.1,color:'#eab308'},{name:'新一线',pct:10.4,color:'#3b82f6'},{name:'一线',pct:6.3,color:'#22c55e'}],
-        insight:'下沉市场（三线及以下）回款率持续走低，四线及以下仅82.4%（MoM -1.6pp），与一线差距达11pp。下沉市场用户占27.9%但贡献了61.2%的回款下降。',
-        action:'① 下沉市场：测试短信+微信双通道触达；② 四线及以下：前置支付限制灰度，缩短催收窗口期；③ 一线/新一线：维持当前策略。'},
-       {name:'借款次数分布',
-        kpis:[{l:'首次借款',v:'回款率91.4%',c:'+0.2pp',t:'good'},{l:'2-5次',v:'回款率88.2%',c:'-0.6pp',t:'bad'},{l:'6-10次',v:'回款率85.6%',c:'-1.1pp',t:'bad'},{l:'10次+',v:'回款率82.8%',c:'-1.8pp',t:'bad'}],
-        table:{cols:['借款次数','用户数(万)','回款率','MoM','余额(亿)','入催率','复逾率'],
-          rows:[['首次借款','112.4','91.4%','+0.2pp','124.6','2.14%','—'],['2-5次','128.6','88.2%','-0.6pp','248.4','3.42%','12.4%'],['6-10次','68.4','85.6%','-1.1pp','186.2','4.86%','18.6%'],['10次以上','28.8','82.8%','-1.8pp','61.4','6.28%','24.2%']]},
-        chartData:{labels:['首次','2-5次','6-10次','10次+'],series:[91.4,88.2,85.6,82.8],baseline:[90.0,90.0,90.0,90.0]},
-        contribs:[{name:'6-10次',pct:34.8,color:'#dc2626'},{name:'10次以上',pct:26.2,color:'#f97316'},{name:'2-5次',pct:24.6,color:'#eab308'},{name:'首次借款',pct:14.4,color:'#22c55e'}],
-        insight:'随借款次数增加，回款率明显递减且复逾率递增。6次以上老客回款率不足86%，且复逾率超18%，说明频繁借贷客群正在积累风险。',
-        action:'① 10次+客群：触发协商前置+人工评估；② 6-10次客群：加强二轮扣款和限制灰度；③ 首次借款：保持轻策略不变。'}
-     ]},
-    {key:'loan_profile',icon:'💰',name:'借款画像',
-     subs:[
-       {name:'借款金额段',
-        kpis:[{l:'大金额(>1.5万)',v:'回款率79.4%',c:'-2.1pp',t:'bad'},{l:'中金额(5k-1.5万)',v:'回款率89.2%',c:'-0.5pp',t:'bad'},{l:'小金额(<5k)',v:'回款率94.6%',c:'+0.1pp',t:'good'},{l:'大金额余额占比',v:'52.3%',c:'+1.8pp',t:'bad'}],
-        table:{cols:['金额段','用户数(万)','回款率','MoM','余额(亿)','入催率','人均逾期(元)'],
-          rows:[['<2000元','48.6','96.8%','+0.2pp','6.2','0.84%','1,420'],['2000-5000元','82.4','93.2%','+0.0pp','28.4','1.96%','3,680'],['5000-10000元','96.8','90.4%','-0.3pp','72.6','3.12%','7,240'],['10000-15000元','64.2','87.6%','-0.8pp','82.4','4.28%','12,860'],['15000-20000元','32.4','81.2%','-1.6pp','56.8','5.84%','17,420'],['20000元+','14.2','76.4%','-2.8pp','74.2','7.62%','24,680']]},
-        chartData:{labels:['<2k','2k-5k','5k-1w','1w-1.5w','1.5w-2w','2w+'],series:[96.8,93.2,90.4,87.6,81.2,76.4],baseline:[90.0,90.0,90.0,90.0,90.0,90.0]},
-        contribs:[{name:'20000元+',pct:34.6,color:'#dc2626'},{name:'15000-20000',pct:24.8,color:'#f97316'},{name:'10000-15000',pct:18.4,color:'#eab308'},{name:'5000-10000',pct:12.6,color:'#3b82f6'},{name:'<5000',pct:9.6,color:'#22c55e'}],
-        insight:'金额与回款率呈明显负相关。2万+客群回款率仅76.4%（MoM -2.8pp），占用户4.2%但余额占23.1%。1.5万+合计余额占比52.3%，是回款下降的主战场。',
-        action:'① 2万+客群：灰度支付限制+专案人工；② 1.5-2万：晚间补扣+协商前置；③ 5k以下：释放资源，维持轻策略。'},
-       {name:'借款期限分布',
-        kpis:[{l:'3个月期',v:'回款率94.2%',c:'+0.1pp',t:'good'},{l:'6个月期',v:'回款率89.8%',c:'-0.4pp',t:'bad'},{l:'12个月期',v:'回款率84.6%',c:'-1.2pp',t:'bad'},{l:'长期限占比',v:'38.4%',c:'+2.1pp',t:'bad'}],
-        table:{cols:['期限','用户数(万)','回款率','MoM','余额(亿)','入催率','提前结清率'],
-          rows:[['3个月','124.6','94.2%','+0.1pp','86.4','1.64%','32.4%'],['6个月','108.4','89.8%','-0.4pp','148.2','3.28%','18.6%'],['9个月','62.8','86.4%','-0.8pp','112.6','4.52%','12.4%'],['12个月','42.6','84.6%','-1.2pp','73.4','5.86%','8.2%']]},
-        chartData:{labels:['3个月','6个月','9个月','12个月'],series:[94.2,89.8,86.4,84.6],baseline:[90.0,90.0,90.0,90.0]},
-        contribs:[{name:'12个月',pct:36.4,color:'#dc2626'},{name:'9个月',pct:28.2,color:'#f97316'},{name:'6个月',pct:22.8,color:'#eab308'},{name:'3个月',pct:12.6,color:'#22c55e'}],
-        insight:'长期限产品（9-12个月）回款率持续走低，12个月期仅84.6%（MoM -1.2pp）。长期限占比从36.3%升至38.4%，结构性拉低整体回款。',
-        action:'① 12个月期：强化中期（M3-M6）监控预警；② 9个月期：优化协商方案匹配；③ 3个月期：作为回款稳定器维持。'},
-       {name:'还款日分布',
-        kpis:[{l:'月初(1-10日)',v:'回款率91.8%',c:'+0.1pp',t:'good'},{l:'月中(11-20日)',v:'回款率88.4%',c:'-0.6pp',t:'bad'},{l:'月末(21-31日)',v:'回款率86.2%',c:'-1.1pp',t:'bad'},{l:'波动最大',v:'月末',c:'扣款失败率高',t:'bad'}],
-        table:{cols:['还款日区间','用户数(万)','回款率','MoM','扣款成功率','余额(亿)','失败原因TOP1'],
-          rows:[['1-5日','82.4','92.4%','+0.2pp','74.2%','124.6','余额不足(42%)'],['6-10日','68.6','91.2%','+0.0pp','72.8%','98.4','银行维护(38%)'],['11-15日','64.2','89.6%','-0.4pp','68.4%','86.2','余额不足(46%)'],['16-20日','52.8','87.2%','-0.8pp','64.6%','72.4','零钱不足(51%)'],['21-25日','42.4','86.8%','-0.9pp','62.1%','58.6','零钱不足(54%)'],['26-31日','28.2','85.2%','-1.4pp','58.4%','28.4','跨月结算(48%)']]},
-        chartData:{labels:['1-5','6-10','11-15','16-20','21-25','26-31'],series:[92.4,91.2,89.6,87.2,86.8,85.2],baseline:[90.0,90.0,90.0,90.0,90.0,90.0]},
-        contribs:[{name:'26-31日',pct:28.4,color:'#dc2626'},{name:'21-25日',pct:24.2,color:'#f97316'},{name:'16-20日',pct:22.6,color:'#eab308'},{name:'11-15日',pct:14.2,color:'#3b82f6'},{name:'1-10日',pct:10.6,color:'#22c55e'}],
-        insight:'月末还款日用户回款率显著低于月初（85.2% vs 92.4%），核心原因是月末零钱/余额不足比例更高，叠加跨月结算导致扣款窗口缩短。',
-        action:'① 月末用户：提前3天触发还款提醒+预充值引导；② 21-31日区间：增加晚间补扣批次；③ 月初用户：维持标准策略。'}
-     ]},
-    {key:'overdue_profile',icon:'📊',name:'逾期画像',
-     subs:[
-       {name:'逾期深度(DPD)',
-        kpis:[{l:'D1-D5',v:'回款率86.8%',c:'-0.7pp',t:'bad'},{l:'D6-D15',v:'回款率62.4%',c:'-1.2pp',t:'bad'},{l:'D16-D30',v:'回款率41.6%',c:'-0.8pp',t:'bad'},{l:'D30+',v:'回款率24.2%',c:'-0.4pp',t:'bad'}],
-        table:{cols:['逾期阶段','用户数(万)','回款率','MoM','余额(亿)','催收方式','核心断点'],
-          rows:[['D1-D3','124.6','89.4%','-0.5pp','186.2','提醒+自动扣款','扣款时段不佳'],['D4-D5','48.2','82.6%','-1.0pp','86.4','强提醒+补扣','补扣未覆盖'],['D6-D10','32.4','68.2%','-1.4pp','62.8','限制灰度+二轮扣','限制后未承接'],['D11-D15','18.6','54.8%','-0.9pp','38.4','限制+Agent','Agent转化率低'],['D16-D30','14.2','41.6%','-0.8pp','32.6','协商+人工评估','方案匹配不足'],['D30+','8.4','24.2%','-0.4pp','28.6','征信/法务+专案','回收边际递减']]},
-        chartData:{labels:['D1-3','D4-5','D6-10','D11-15','D16-30','D30+'],series:[89.4,82.6,68.2,54.8,41.6,24.2],baseline:[90.0,85.0,70.0,58.0,45.0,28.0]},
-        contribs:[{name:'D4-D5',pct:32.4,color:'#dc2626'},{name:'D1-D3',pct:24.8,color:'#f97316'},{name:'D6-D10',pct:18.6,color:'#eab308'},{name:'D11-D15',pct:12.4,color:'#3b82f6'},{name:'D16+',pct:11.8,color:'#22c55e'}],
-        insight:'D4-D5是回款断裂最明显的阶段（MoM -1.0pp），占回款下降贡献32.4%。核心原因是首轮扣款失败后缺少有效补扣覆盖，D1-D3的初始滑坡也在扩大。',
-        action:'① D4-D5：上线晚间补扣+强化二轮提醒；② D1-D3：优化扣款时段（避开凌晨0-4点）；③ D6-D10：限制后24h增加承接动作。'},
-       {name:'历史逾期次数',
-        kpis:[{l:'首逾用户',v:'回款率89.2%',c:'-0.4pp',t:'bad'},{l:'2次逾期',v:'回款率82.4%',c:'-0.8pp',t:'bad'},{l:'3次+逾期',v:'回款率72.6%',c:'-1.6pp',t:'bad'},{l:'首逾占比',v:'62.4%',c:'-1.2pp',t:'bad'}],
-        table:{cols:['历史逾期次数','用户数(万)','回款率','MoM','余额(亿)','入催率','平均DPD'],
-          rows:[['首次逾期','186.4','89.2%','-0.4pp','248.6','2.84%','4.2天'],['第2次','68.2','82.4%','-0.8pp','124.8','4.96%','8.6天'],['第3次','32.6','76.8%','-1.2pp','68.4','6.84%','14.2天'],['4次及以上','18.4','68.2%','-2.1pp','42.8','8.62%','22.8天']]},
-        chartData:{labels:['首逾','2次','3次','4次+'],series:[89.2,82.4,76.8,68.2],baseline:[90.0,85.0,78.0,70.0]},
-        contribs:[{name:'4次+',pct:34.2,color:'#dc2626'},{name:'3次',pct:28.4,color:'#f97316'},{name:'2次',pct:22.6,color:'#eab308'},{name:'首逾',pct:14.8,color:'#22c55e'}],
-        insight:'多次逾期客群是回款下降的核心驱动。4次+客群回款率仅68.2%（MoM -2.1pp），平均DPD达22.8天，且该群体占比有扩大趋势。',
-        action:'① 4次+客群：直接进入人工专案+协商方案；② 3次客群：前置支付限制+履约监控；③ 首逾客群：轻策略+优化扣款覆盖。'},
-       {name:'OH历史逾期最长天数',
-        kpis:[{l:'历史未逾期',v:'2174.7万',c:'占73.80%',t:'good'},{l:'M2+客群',v:'65.5万',c:'余额27.69亿',t:'bad'},{l:'入催率差异',v:'22.4x',c:'M2+ vs 未逾期',t:'bad'},{l:'余额集中度',v:'前3档占92.7%',c:'结构性集中',t:'bad'}],
-        table:{cols:['逾期档位','用户数(万)','用户占比','余额(亿)','余额占比','入催率','数据源'],
-          rows:[['历史未逾期','2174.7','73.80%','486.2','56.28%','0.84%','OH表'],['1-3天','413.8','14.05%','186.4','21.58%','3.62%','OH表'],['4-7天','127.0','4.31%','62.8','7.27%','6.84%','OH表'],['8-15天','93.6','3.18%','48.6','5.63%','9.42%','OH表'],['16-30天','46.2','1.57%','32.4','3.75%','12.86%','OH表'],['M2','25.6','0.87%','18.2','2.11%','15.42%','OH表'],['M2+','65.5','2.22%','27.69','3.21%','18.84%','OH表']]},
-        chartData:{labels:['未逾期','1-3天','4-7天','8-15天','16-30天','M2','M2+'],series:[0.84,3.62,6.84,9.42,12.86,15.42,18.84],baseline:[2.0,2.0,2.0,2.0,2.0,2.0,2.0]},
-        contribs:[{name:'历史未逾期',pct:56.3,color:'#22c55e'},{name:'1-3天',pct:21.6,color:'#3b82f6'},{name:'4-7天',pct:7.3,color:'#eab308'},{name:'8-15天',pct:5.6,color:'#f97316'},{name:'16天+',pct:9.2,color:'#dc2626'}],
-        insight:'OH历史逾期数据显示73.8%用户从未逾期，但M2+客群（65.5万人）入催率高达18.84%，是未逾期客群的22.4倍。余额分布高度集中：前3档占92.7%。',
-        action:'① M2+客群：纳入高风险专案管理，前置协商+人工介入；② 16-30天档：加强限制灰度和二轮扣款；③ 未逾期客群：维持轻策略保护体验。'}
-     ]},
-    {key:'credit_profile',icon:'🏛️',name:'人行画像',
-     subs:[
-       {name:'征信评分段',
-        kpis:[{l:'优质(750+)',v:'回款率96.4%',c:'+0.2pp',t:'good'},{l:'良好(700-749)',v:'回款率91.2%',c:'-0.2pp',t:'bad'},{l:'一般(650-699)',v:'回款率84.6%',c:'-1.0pp',t:'bad'},{l:'较差(<650)',v:'回款率74.8%',c:'-2.4pp',t:'bad'}],
-        table:{cols:['评分段','用户数(万)','回款率','MoM','余额(亿)','入催率','外部负债率'],
-          rows:[['750+','86.4','96.4%','+0.2pp','142.6','0.82%','18.4%'],['700-749','124.8','91.2%','-0.2pp','248.2','2.46%','32.6%'],['650-699','84.6','84.6%','-1.0pp','168.4','4.84%','48.2%'],['600-649','32.4','78.2%','-1.8pp','48.6','6.92%','62.4%'],['<600','10.2','68.4%','-3.2pp','12.8','9.84%','78.6%']]},
-        chartData:{labels:['750+','700-749','650-699','600-649','<600'],series:[96.4,91.2,84.6,78.2,68.4],baseline:[90.0,90.0,90.0,90.0,90.0]},
-        contribs:[{name:'<600',pct:28.6,color:'#dc2626'},{name:'600-649',pct:26.4,color:'#f97316'},{name:'650-699',pct:24.2,color:'#eab308'},{name:'700-749',pct:14.2,color:'#3b82f6'},{name:'750+',pct:6.6,color:'#22c55e'}],
-        insight:'征信评分与回款率高度正相关。<650分客群回款率不足80%，外部负债率超60%，说明多头借贷严重。<600分客群MoM -3.2pp，是恶化最快的群体。',
-        action:'① <600分：触发专案管理+前置协商；② 600-649分：增加支付限制灰度；③ 750+分：保持轻策略释放资源。'},
-       {name:'外部负债笔数',
-        kpis:[{l:'0笔(纯新)',v:'回款率94.8%',c:'+0.1pp',t:'good'},{l:'1-3笔',v:'回款率90.4%',c:'-0.3pp',t:'bad'},{l:'4-6笔',v:'回款率82.6%',c:'-1.4pp',t:'bad'},{l:'7笔+',v:'回款率72.4%',c:'-2.8pp',t:'bad'}],
-        table:{cols:['外部负债笔数','用户数(万)','回款率','MoM','余额(亿)','入催率','共债指数'],
-          rows:[['0笔','68.4','94.8%','+0.1pp','86.2','1.24%','0'],['1-3笔','142.6','90.4%','-0.3pp','268.4','2.68%','1.8'],['4-6笔','86.2','82.6%','-1.4pp','168.2','5.24%','4.2'],['7-10笔','32.4','76.2%','-2.1pp','68.4','7.42%','7.6'],['10笔+','8.8','64.8%','-3.6pp','29.4','11.84%','12.4']]},
-        chartData:{labels:['0笔','1-3笔','4-6笔','7-10笔','10笔+'],series:[94.8,90.4,82.6,76.2,64.8],baseline:[90.0,90.0,90.0,90.0,90.0]},
-        contribs:[{name:'4-6笔',pct:32.4,color:'#dc2626'},{name:'7-10笔',pct:24.6,color:'#f97316'},{name:'10笔+',pct:18.2,color:'#eab308'},{name:'1-3笔',pct:16.4,color:'#3b82f6'},{name:'0笔',pct:8.4,color:'#22c55e'}],
-        insight:'多头借贷是回款下降的强信号。4笔以上客群回款率<83%，7笔以上<77%。共债指数与回款率呈强负相关（R²=0.94），10笔+客群入催率高达11.84%。',
-        action:'① 7笔+：高优先级催收+协商方案定制；② 4-6笔：强化提醒频次+支付限制前置；③ 0-3笔：轻策略维持。'},
-       {name:'近6月查询次数',
-        kpis:[{l:'0-2次',v:'回款率93.6%',c:'+0.1pp',t:'good'},{l:'3-5次',v:'回款率88.4%',c:'-0.4pp',t:'bad'},{l:'6-10次',v:'回款率81.2%',c:'-1.2pp',t:'bad'},{l:'10次+',v:'回款率72.8%',c:'-2.6pp',t:'bad'}],
-        table:{cols:['查询次数','用户数(万)','回款率','MoM','余额(亿)','入催率','贡献度'],
-          rows:[['0-2次','142.8','93.6%','+0.1pp','186.4','1.62%','12.4%'],['3-5次','108.4','88.4%','-0.4pp','168.2','3.28%','22.6%'],['6-10次','62.4','81.2%','-1.2pp','124.6','5.84%','34.2%'],['10次以上','24.8','72.8%','-2.6pp','41.4','8.96%','30.8%']]},
-        chartData:{labels:['0-2次','3-5次','6-10次','10次+'],series:[93.6,88.4,81.2,72.8],baseline:[90.0,90.0,90.0,90.0]},
-        contribs:[{name:'6-10次',pct:34.2,color:'#dc2626'},{name:'10次+',pct:30.8,color:'#f97316'},{name:'3-5次',pct:22.6,color:'#eab308'},{name:'0-2次',pct:12.4,color:'#22c55e'}],
-        insight:'近6月征信查询次数是资金紧张度的领先指标。6次以上客群回款率<82%，贡献了65%的回款下降。查询频繁说明正在密集申请多家，还款优先级可能被稀释。',
-        action:'① 10次+：纳入高风险池+前置人工评估；② 6-10次：灰度支付限制+强化扣款；③ 0-2次：稳定盘维持策略。'}
-     ]},
-    {key:'collection_action',icon:'📞',name:'催收动作',
-     subs:[
-       {name:'触达方式效果',
-        kpis:[{l:'微信提醒',v:'转化率8.4%',c:'-0.6pp',t:'bad'},{l:'短信提醒',v:'转化率4.2%',c:'-0.3pp',t:'bad'},{l:'自动扣款',v:'成功率68.4%',c:'-1.8pp',t:'bad'},{l:'支付限制',v:'回款率13.0%',c:'+0.4pp',t:'good'}],
-        table:{cols:['触达方式','覆盖用户(万)','曝光/触达率','转化/成功率','MoM','回款贡献(亿)','单用户成本'],
-          rows:[['微信服务通知','286.4','96.8%','8.4%','-0.6pp','42.6','¥0.02'],['微信订阅消息','184.2','72.4%','6.2%','-0.4pp','24.8','¥0.01'],['短信','212.6','98.2%','4.2%','-0.3pp','18.4','¥0.05'],['自动扣款(首轮)','312.8','—','68.4%','-1.8pp','186.2','¥0.00'],['晚间补扣','86.4','—','42.6%','新上线','18.6','¥0.00'],['支付限制灰度','42.8','—','13.0%','+0.4pp','12.4','¥0.00'],['Agent外呼','18.6','62.4%','22.8%','-0.8pp','8.6','¥1.20'],['人工电催','9.2','84.6%','35.2%','+1.2pp','14.2','¥8.50']]},
-        chartData:{labels:['微信服务通知','微信订阅','短信','自动扣款','补扣','支付限制','Agent','人工电催'],series:[8.4,6.2,4.2,68.4,42.6,13.0,22.8,35.2],baseline:[10.0,8.0,5.0,72.0,45.0,12.0,25.0,33.0]},
-        contribs:[{name:'自动扣款',pct:42.8,color:'#dc2626'},{name:'微信服务通知',pct:18.4,color:'#f97316'},{name:'支付限制',pct:12.6,color:'#eab308'},{name:'人工电催',pct:11.2,color:'#3b82f6'},{name:'其他',pct:15.0,color:'#22c55e'}],
-        insight:'自动扣款是最大回款贡献源（186.2亿/42.8%），但成功率下滑-1.8pp是回款下降的首要因素。微信提醒转化率也在下滑（-0.6pp），提醒疲劳效应显现。',
-        action:'① 扣款：优化时段分布（增加晚间批次）+银行通道备份；② 提醒：分人群差异化文案+降低低效触达频次；③ 支付限制：扩大灰度到高风险全量。'},
-       {name:'催收时段效果',
-        kpis:[{l:'最佳时段',v:'10:00-12:00',c:'转化率12.4%',t:'good'},{l:'最差时段',v:'0:00-6:00',c:'转化率2.1%',t:'bad'},{l:'晚间补扣',v:'18:00-22:00',c:'成功率42.6%',t:'good'},{l:'时段覆盖缺口',v:'22:00-6:00',c:'无有效动作',t:'bad'}],
-        table:{cols:['时段','提醒转化率','扣款成功率','Agent接通率','回款占比','优化建议'],
-          rows:[['6:00-8:00','4.8%','62.4%','32.6%','8.2%','增加早间首轮扣款'],['8:00-10:00','8.6%','68.2%','48.4%','14.6%','主力提醒时段'],['10:00-12:00','12.4%','72.8%','56.2%','22.4%','最佳催收窗口'],['12:00-14:00','6.2%','58.4%','42.8%','12.8%','午间效果一般'],['14:00-18:00','9.8%','66.4%','52.6%','18.6%','次优催收窗口'],['18:00-22:00','7.4%','42.6%','38.4%','16.2%','补扣主力时段'],['22:00-6:00','2.1%','28.4%','—','7.2%','覆盖缺口']]},
-        chartData:{labels:['6-8','8-10','10-12','12-14','14-18','18-22','22-6'],series:[62.4,68.2,72.8,58.4,66.4,42.6,28.4],baseline:[65.0,65.0,65.0,65.0,65.0,65.0,65.0]},
-        contribs:[{name:'10-12点',pct:22.4,color:'#22c55e'},{name:'14-18点',pct:18.6,color:'#3b82f6'},{name:'18-22点',pct:16.2,color:'#eab308'},{name:'8-10点',pct:14.6,color:'#3b82f6'},{name:'其他',pct:28.2,color:'#94a3b8'}],
-        insight:'10:00-12:00是最佳催收窗口（提醒转化12.4%，扣款成功72.8%），但22:00-6:00存在覆盖缺口（扣款成功仅28.4%），占时段1/3但回款贡献仅7.2%。',
-        action:'① 集中首轮扣款到8:00-12:00黄金窗口；② 增加18:00-22:00补扣批次；③ 减少凌晨无效扣款尝试降低银行通道损耗。'},
-       {name:'升级策略效果',
-        kpis:[{l:'Agent→人工转化',v:'22.8%',c:'-0.8pp',t:'bad'},{l:'人工命中率',v:'35.1%',c:'+3.5pp',t:'good'},{l:'专案命中率',v:'46.2%',c:'+2.4pp',t:'good'},{l:'人效比',v:'¥2.4万/人/月',c:'+12%',t:'good'}],
-        table:{cols:['升级策略','适用客群','用户数(万)','命中率','MoM','回款金额(亿)','ROI'],
-          rows:[['Agent自动外呼','全量D3+','18.6','22.8%','-0.8pp','8.6','1:6.2'],['标准人工池','D15+一般','6.4','28.4%','+1.2pp','4.8','1:4.8'],['专案人工池','D30+高风险大额','2.8','46.2%','+2.4pp','9.6','1:8.4'],['法务升级','D60+高风险','1.2','18.6%','+0.6pp','3.2','1:3.2'],['协商专线','主动沟通','4.2','52.4%','+1.8pp','6.4','1:9.6']]},
-        chartData:{labels:['Agent','标准人工','专案人工','法务','协商专线'],series:[22.8,28.4,46.2,18.6,52.4],baseline:[25.0,25.0,25.0,25.0,25.0]},
-        contribs:[{name:'专案人工',pct:34.8,color:'#22c55e'},{name:'协商专线',pct:24.2,color:'#3b82f6'},{name:'Agent',pct:18.6,color:'#eab308'},{name:'标准人工',pct:14.2,color:'#f97316'},{name:'法务',pct:8.2,color:'#dc2626'}],
-        insight:'专案人工和协商专线ROI最高（1:8.4和1:9.6），但覆盖面有限。Agent外呼转化率连续下滑（22.8%，MoM -0.8pp），可能存在话术疲劳或客群匹配不精准。',
-        action:'① 扩大专案人工池覆盖到D15+高风险大额；② 优化Agent话术版本+客群精准匹配；③ 协商专线增加主动触达对象范围。'}
-     ]}
-  ],
-  aiCards:[
-    {
-      title:'为什么这个月短逾期回收下降？',
-      answer:'核心不是触达下降，而是扣款命中和二轮动作衔接变弱。高风险首逾客群在提醒后的 6 小时内没有进入有效补扣，导致回收损失集中在 D1-D3。',
-      evidence:'高风险首逾扣款命中率从 29.4% 降到 24.8%；凌晨 0-4 点批次失败占比上升 6pp；支付限制后回款率仍高，说明前置动作偏弱。',
-      action:'灰度“提醒强化 + 晚间补扣 + 次日支付限制”组合策略，优先圈定高风险大金额客群，并同步观察投诉变化。'
-    },
-    {
-      title:'哪些案件应该升级人工电催？',
-      answer:'建议只升级高风险、大金额、且支付限制后 24 小时未回款的案件。这样人工命中率更高，也能避免对一般用户造成过度打扰。',
-      evidence:'当前人工升级命中率 35.1%，大金额客群命中率可达 46.2%；一般用户人工升级命中率只有 18.7%。',
-      action:'新增“金额 > 8k 且 D30+ 且历史逾期 >= 2 次”的升级规则，并进入专案人工池。'
-    },
-    {
-      title:'为什么要建客诉风险中枢？',
-      answer:'因为现在能看到投诉数量，但看不到是哪种动作、哪个客群、哪个流程节点导致投诉。没有归因，就无法在保催回和控风险之间做经营平衡。',
-      evidence:'近 30 天敏感投诉 48 件，其中 61% 来自征信上报、支付限制和外呼话术；高风险大金额客群占 44%。',
-      action:'把触发量、回款贡献、投诉贡献、审批留痕放在一张图里统一看，并形成整改待办。'
-    },
-    {
-      title:'协商经营中心最直接的价值是什么？',
-      answer:'不是让协商量变多，而是让协商方案、履约跟踪、复逾预警和升级转人工变成一套经营系统。长逾期管理因此从“被动处理”变成“主动经营”。',
-      evidence:'协商进件上涨 18%，但高风险大金额客群复逾仍偏高；客服、agent、人工电催之间没有统一承接队列。',
-      action:'优先上线准入规则、方案库、履约预警和专案升级四个能力。'
-    }
-  ]
-};
-
-function disposeCharts(){
-  Object.keys(charts).forEach(k=>{ try{ charts[k].dispose(); }catch(e){} delete charts[k]; });
-}
-function initChart(id){
-  const dom = document.getElementById(id);
-  if(!dom) return null;
-  const c = echarts.init(dom);
-  charts[id] = c;
-  return c;
-}
-function spark(id,data,color){
-  const c = initChart(id); if(!c) return;
-  c.setOption({grid:{top:2,left:2,right:2,bottom:2},xAxis:{type:'category',show:false,data:data.map((_,i)=>i)},yAxis:{type:'value',show:false,min:'dataMin',max:'dataMax'},series:[{type:'line',smooth:true,symbol:'none',data:data,lineStyle:{width:2,color:color},areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:color.replace('rgb','rgba').replace(')',',.18)')},{offset:1,color:'rgba(255,255,255,0)'}]}}}]});
-}
-function switchPage(page,el){
-  document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));
-  if(el) el.classList.add('active');
-  document.getElementById('pageTitle').textContent = pageName[page] || '';
-  disposeCharts();
-  render(page);
-}
-function render(page){
-  if(page==='control') return renderControl();
-  if(page==='value') return renderValue();
-  if(page==='short') return renderShort();
-  if(page==='long') return renderLong();
-  if(page==='risk') return renderRisk();
-  if(page==='lab') return renderLab();
-  if(page==='release') return renderRelease();
-  if(page==='case360') return renderCase360();
-  if(page==='ai') return renderAI();
-  if(page==='attrib') return renderAttrib();
+function dc(){Object.keys(charts).forEach(k=>{try{charts[k].dispose()}catch(e){}delete charts[k]})}
+function ic(id){const dom=document.getElementById(id);if(!dom)return null;const c=echarts.init(dom);charts[id]=c;return c}
+function spark(id,data,color){const c=ic(id);if(!c)return;c.setOption({grid:{top:2,left:2,right:2,bottom:2},xAxis:{type:'category',show:false,data:data.map((_,i)=>i)},yAxis:{type:'value',show:false,min:'dataMin',max:'dataMax'},series:[{type:'line',smooth:true,symbol:'none',data,lineStyle:{width:2,color},areaStyle:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:color.replace('rgb','rgba').replace(')',',.18)')},{offset:1,color:'rgba(255,255,255,0)'}]}}}]})}
+function go(p,el){document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));if(el)el.classList.add('active');document.getElementById('pageTitle').textContent=PN[p]||'';app.page=p;dc();render()}
+function render(){const m=document.getElementById('main');if(app.page==='p1')renderP1(m);else if(app.page==='p2')renderP2(m);else if(app.page==='p3')renderP3(m);else if(app.page==='p4')renderP4(m)}
+// ===== 第1页：指标异动归因总结 =====
+function renderP1(m){
+m.innerHTML=`
+<div class="value-banner"><div class="icon">💎</div><div class="text"><h3>本页价值</h3><p>快速定位"整体指标为什么变了"，通过交叉多维度挖掘出真正的问题点。不只告诉你"指标红了"，而是直接回答"是哪个客群、哪个阶段、什么原因导致的"，并给出可执行的建议动作。</p></div></div>
+<div class="hero"><h2>📊 指标异动归因总结</h2><p>展示核心经营指标及其环比变化，自动识别异动并通过交叉维度分析（风险等级×金额段×逾期阶段×用户特征）定位根因，归纳的原因聚焦客群结构变迁而非单纯策略问题。</p></div>
+<div class="grid kpi" id="p1kpis"></div>
+<div class="card" style="margin-bottom:16px"><div class="title">🔥 本月核心异动归因（按影响度排序）</div><div class="sub">以下异动均通过交叉多维度分析定位，每个问题点标注了涉及的维度组合、根因分析和建议动作。</div><div class="issue-list" id="p1issues"></div></div>
+<div class="grid equal">
+<div class="card"><div class="title">核心指标趋势（近6月）</div><div class="chart" id="p1trend"></div></div>
+<div class="card"><div class="title">回款下降贡献度拆解</div><div class="sub">当前回款下降的驱动因素不是"策略不够多"，而是客群结构恶化（C卡高风险占比上升+大金额集中度加剧）叠加扣款断点扩大。</div><div class="chart" id="p1pie"></div></div>
+</div>`;
+document.getElementById('p1kpis').innerHTML=D.kpis.map((k,i)=>`<div class="card kpi-card ${k.t==='bad'?'red':'green'}"><div class="kpi-label">${k.l}</div><div class="kpi-value">${k.v}</div><div class="kpi-change ${k.t==='bad'?'bad':'good'}">${k.c}</div><div class="spark" id="sp${i}"></div></div>`).join('');
+D.kpis.forEach((k,i)=>spark('sp'+i,k.s,k.t==='bad'?'rgb(220,38,38)':'rgb(5,150,105)'));
+document.getElementById('p1issues').innerHTML=D.anomalies.map(a=>`<div class="issue"><div class="row-between"><h4>${a.title}</h4><span class="badge ${a.level}">${a.level==='red'?'高优先级':'重点关注'}</span></div><div style="margin:8px 0;padding:8px 12px;background:#f1f5f9;border-radius:8px;font-size:11px;color:#475569"><b>涉及维度：</b>${a.dims}</div><div class="kv"><b>根因分析</b><span>${a.root}</span></div><div class="kv"><b>影响量化</b><span>${a.impact}</span></div><div class="kv"><b>建议动作</b><span>${a.action}</span></div></div>`).join('');
+const c1=ic('p1trend');if(c1)c1.setOption({tooltip:{trigger:'axis'},legend:{top:0},grid:{left:48,right:48,top:36,bottom:28},xAxis:{type:'category',data:M},yAxis:[{type:'value',name:'催回率%',min:38,max:98},{type:'value',name:'入催率%',min:3,max:5}],series:[{name:'M1催回率',type:'line',smooth:true,data:D.trendData.m1,lineStyle:{width:3,color:'#2563eb'},itemStyle:{color:'#2563eb'}},{name:'M2催回率',type:'line',smooth:true,data:D.trendData.m2,lineStyle:{width:3,color:'#7c3aed'},itemStyle:{color:'#7c3aed'}},{name:'入催率',type:'line',yAxisIndex:1,smooth:true,data:D.trendData.inflow,lineStyle:{width:3,color:'#dc2626',type:'dashed'},itemStyle:{color:'#dc2626'}}]});
+const c2=ic('p1pie');if(c2)c2.setOption({tooltip:{trigger:'item',formatter:'{b}: {d}%'},series:[{type:'pie',radius:['38%','68%'],data:D.contribData,label:{formatter:'{b}\n{d}%',fontSize:11},itemStyle:{borderRadius:6,borderWidth:2,borderColor:'#fff'},emphasis:{itemStyle:{shadowBlur:10}}}]});
 }
 
-function renderControl(){
-  const main = document.getElementById('main');
-  main.innerHTML = `
-    <div class="hero">
-      <h2>经营控制台：先告诉你“今天最该管什么”，再告诉你“怎么调”</h2>
-      <p>这页不再只是一个驾驶舱，而是一个更接近真实运营管理的控制台。你会先看到异常问题、建议动作和预估效果，再往下看趋势、归因和待办。这能更直观地体现平台价值：它不是帮你多看几张图，而是帮你更快做出正确动作。</p>
-      <div class="hero-grid">
-        <div class="hero-box">
-          <h3>这页最强的 3 个价值点</h3>
-          <ul>
-            <li>把“指标异常”直接翻译成“经营问题”</li>
-            <li>把“原因分析”直接翻译成“可执行动作”</li>
-            <li>把“效果提升”与“投诉副作用”放在一起看</li>
-          </ul>
-        </div>
-        <div class="hero-box">
-          <h3>当前最值得优先投入的方向</h3>
-          <ul>
-            <li>短逾期漏斗治理：补扣款断点</li>
-            <li>协商经营中心：补履约与复逾闭环</li>
-            <li>敏感动作治理：补投诉与监管归因</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="grid kpi" id="controlKpis"></div>
-    <div class="board">
-      <div class="card">
-        <div class="title">本周最值得处理的 3 个问题</div>
-        <div class="issue-list" id="controlIssues"></div>
-      </div>
-      <div class="card">
-        <div class="title">平台价值闭环：发现 → 定位 → 调整 → 验证</div>
-        <div class="flow">
-          <div class="step"><div class="num">1</div><h5>发现异常</h5><p>首页直接发现短逾、协商、投诉哪一端出问题。</p></div>
-          <div class="step"><div class="num">2</div><h5>定位原因</h5><p>拆到客群、阶段、动作，不只停留在总盘。</p></div>
-          <div class="step"><div class="num">3</div><h5>调整策略</h5><p>给出具体动作、灰度范围、风险提示。</p></div>
-          <div class="step"><div class="num">4</div><h5>验证效果</h5><p>同时看回款、服务、投诉和人工效率。</p></div>
-        </div>
-        <div class="notice"><div class="icon">💡</div><p><b>感受平台价值的方式：</b>如果你打开页面后能立刻知道“该找谁、改什么、影响什么”，那平台就不是 BI 看板，而是真的经营工具。</p></div>
-      </div>
-    </div>
-    <div class="grid equal">
-      <div class="card">
-        <div class="title">经营平衡趋势：回款、服务、客诉一起看</div>
-        <div class="sub">贷后平台的价值不只是把回款拉高，而是能看清提升回款是否以牺牲服务和客诉风险为代价。</div>
-        <div class="chart" id="controlTrend"></div>
-      </div>
-      <div class="card">
-        <div class="title">问题贡献拆解</div>
-        <div class="sub">当前问题不是“策略太少”，而是扣款断点、协商分层、敏感动作治理三件事没有形成统一系统。</div>
-        <div class="chart" id="problemMix"></div>
-      </div>
-    </div>
-  `;
-
-  document.getElementById('controlKpis').innerHTML = d.controlKpis.map((k,i)=>`
-    <div class="card kpi-card ${k.tone}">
-      <div class="kpi-label">${k.label}</div>
-      <div class="kpi-value">${k.value}</div>
-      <div class="kpi-change ${k.type}">${k.change}</div>
-      <div class="spark" id="kpiSpark${i}"></div>
-    </div>
-  `).join('');
-
-  document.getElementById('controlIssues').innerHTML = d.controlIssues.map(item=>`
-    <div class="issue">
-      <div class="row-between"><h4>${item.title}</h4><span class="badge ${item.level==='red'?'red':'orange'}">${item.level==='red'?'高优先级':'重点关注'}</span></div>
-      <p>${item.desc}</p>
-      <div class="kv"><b>原因</b><span>${item.reason}</span></div>
-      <div class="kv"><b>建议动作</b><span>${item.action}</span></div>
-      <div class="kv"><b>预估效果</b><span>${item.effect}</span></div>
-    </div>
-  `).join('');
-
-  d.controlKpis.forEach((k,i)=>spark(`kpiSpark${i}`,k.spark,k.tone==='red'?'rgb(220,38,38)':k.tone==='green'?'rgb(5,150,105)':k.tone==='orange'?'rgb(217,119,6)':'rgb(124,58,237)'));
-
-  const t = initChart('controlTrend');
-  t.setOption({tooltip:{trigger:'axis'},legend:{top:4},grid:{left:48,right:50,top:42,bottom:28},xAxis:{type:'category',data:d.months},yAxis:[{type:'value',name:'%',min:68,max:100},{type:'value',name:'件',min:140,max:260}],series:[{name:'整体催回率',type:'line',smooth:true,data:d.balanceTrend.recovery,lineStyle:{width:3,color:'#059669'},itemStyle:{color:'#059669'}},{name:'服务体验评分',type:'line',smooth:true,data:d.balanceTrend.service,lineStyle:{width:3,color:'#2563eb'},itemStyle:{color:'#2563eb'}},{name:'投诉量',type:'bar',yAxisIndex:1,data:d.balanceTrend.complaints,itemStyle:{color:'#fca5a5',borderRadius:[6,6,0,0]},barWidth:'34%'}]});
-
-  const p = initChart('problemMix');
-  p.setOption({tooltip:{trigger:'item',formatter:'{b}: {d}%'},series:[{type:'pie',radius:['38%','68%'],data:d.problemMix,label:{formatter:'{b}\n{d}%','fontSize':11},itemStyle:{borderRadius:6,borderWidth:2,borderColor:'#fff'}}]});
+// ===== 第2页：按客群维度拆解催回分析 =====
+function setDim(k){app.dim=k;app.sub=0;dc();render()}
+function setSub(i){app.sub=i;dc();render()}
+function renderP2(m){
+const dim=D.dims.find(x=>x.key===app.dim)||D.dims[0];
+const sub=dim.subs[app.sub]||dim.subs[0];
+m.innerHTML=`
+<div class="value-banner"><div class="icon">💎</div><div class="text"><h3>本页价值</h3><p>按用户特征、借款情况、历史逾期、人行借还、专项标签等维度进行单维度分析，再聚合多维度交叉数据，用详实的数据和文字描述精确回答"究竟是哪些维度结合产生了催回的波动"，为第1页的异动提供数据支撑。</p></div></div>
+<div class="hero"><h2>👥 按客群维度拆解催回分析</h2><p>选择不同维度和子维度，查看该切面下的催回率分布、入催率、余额占比等核心指标，并通过交叉维度洞察定位复合因素。</p></div>
+<div class="card" style="margin-bottom:14px"><div class="title">维度选择</div>
+<div class="attrib-dims">${D.dims.map(x=>`<div class="attrib-dim${x.key===app.dim?' active':''}" onclick="setDim('${x.key}')">${x.icon} ${x.name}</div>`).join('')}</div>
+<div class="tabs">${dim.subs.map((s,i)=>`<div class="tab${i===app.sub?' active':''}" onclick="setSub(${i})">${s.name}</div>`).join('')}</div></div>
+<div class="grid four">${sub.kpis.map(k=>`<div class="card kpi-card ${k.t==='bad'?'red':'green'}"><div class="kpi-label">${k.l}</div><div class="kpi-value" style="font-size:20px">${k.v}</div><div class="kpi-change ${k.t}">${k.c}</div></div>`).join('')}</div>
+<div class="grid equal">
+<div class="card"><div class="title">📊 各群体催回率/入催率分布</div><div class="chart" id="p2bar"></div></div>
+<div class="card"><div class="title">📉 回款下降贡献度</div>
+<div class="contrib-bar">${sub.pieSeries.map((c,i)=>{const colors=['#dc2626','#f97316','#eab308','#3b82f6','#22c55e','#8b5cf6'];return`<div style="width:${c.value}%;background:${colors[i%6]}" title="${c.name} ${c.value}%">${c.value>10?c.value+'%':''}</div>`}).join('')}</div>
+<div style="display:flex;flex-wrap:wrap;gap:8px;margin:8px 0">${sub.pieSeries.map((c,i)=>{const colors=['#dc2626','#f97316','#eab308','#3b82f6','#22c55e','#8b5cf6'];return`<span style="font-size:11px;display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:3px;background:${colors[i%6]};display:inline-block"></span>${c.name} (${c.value}%)</span>`}).join('')}</div>
+<div class="chart xs" id="p2pie"></div></div></div>
+<div class="card" style="margin-bottom:14px"><div class="title">📋 明细数据</div><div class="table-wrap"><table class="table"><thead><tr>${sub.table.cols.map(c=>'<th>'+c+'</th>').join('')}</tr></thead><tbody>${sub.table.rows.map(r=>'<tr>'+r.map((v,ci)=>{if(ci===0)return'<td><b>'+v+'</b></td>';const isMoM=sub.table.cols[ci]==='MoM';if(isMoM){const neg=v.includes('-');return'<td><span class="kpi-change '+(neg?'bad':'good')+'">'+v+'</span></td>'}return'<td>'+v+'</td>'}).join('')+'</tr>').join('')}</tbody></table></div></div>
+<div class="card" style="margin-bottom:14px"><div class="title">🔍 异动分析结论</div>${sub.findings.map(f=>`<div class="finding ${f.type}"><p>${f.text}</p></div>`).join('')}</div>
+<div class="attrib-insight" style="margin-bottom:14px"><h4>🧬 多维度交叉洞察</h4><p>${sub.crossInsight}</p></div>
+`;
+const ch1=ic('p2bar');if(ch1)ch1.setOption({tooltip:{trigger:'axis'},grid:{left:48,right:20,top:24,bottom:28},xAxis:{type:'category',data:sub.chartLabels,axisLabel:{fontSize:11,rotate:sub.chartLabels.length>6?30:0}},yAxis:{type:'value',axisLabel:{fontSize:11,formatter:v=>v+'%'}},series:[{type:'bar',data:sub.chartSeries,itemStyle:{color:function(p){const v=p.data;return v<80?'#dc2626':v<88?'#f97316':v<92?'#eab308':'#22c55e'},borderRadius:[6,6,0,0]},label:{show:true,position:'top',fontSize:10,formatter:'{c}%'},barMaxWidth:36}]});
+const ch2=ic('p2pie');if(ch2)ch2.setOption({tooltip:{trigger:'item',formatter:'{b}: {d}%'},series:[{type:'pie',radius:['40%','68%'],center:['50%','55%'],label:{fontSize:10,formatter:'{b}\n{d}%'},data:sub.pieSeries.map((c,i)=>{const colors=['#dc2626','#f97316','#eab308','#3b82f6','#22c55e','#8b5cf6'];return{name:c.name,value:c.value,itemStyle:{color:colors[i%6]}}})}]});
 }
 
-function renderValue(){
-  const main = document.getElementById('main');
-  main.innerHTML = `
-    <div class="hero">
-      <h2>价值目标树：平台价值不在“策略多”，而在“关键策略经营得更好”</h2>
-      <p>贷后平台的意义，不是把贷后做成贷前那样高频试验，而是让关键动作更可控、更可归因、更可协同。特别是在高催回率已经处于业内前列的情况下，平台更像是一个平衡器：平衡回款、服务、客诉、监管风险和人工成本。</p>
-    </div>
-    <div class="grid equal">
-      <div class="card">
-        <div class="title">价值目标树</div>
-        <div class="tree">
-          <div class="tree-col"><h4>一级目标</h4><span class="pill">高催回率</span><span class="pill">好服务</span><span class="pill">低客诉</span><span class="pill">低监管风险</span><span class="pill">高协同效率</span></div>
-          <div class="tree-col"><h4>二级抓手</h4><span class="pill">短逾期回收</span><span class="pill">长逾期经营</span><span class="pill">协商履约</span><span class="pill">敏感动作治理</span><span class="pill">人工升级命中</span></div>
-          <div class="tree-col"><h4>三级动作</h4><span class="pill">提醒</span><span class="pill">扣款</span><span class="pill">支付限制</span><span class="pill">协商</span><span class="pill">客服/agent</span><span class="pill">征信/律函</span><span class="pill">人工电催/调解</span></div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="title">平台应该回答的核心问题</div>
-        <div class="stack">
-          <div class="panel"><h4>哪里出问题了？</h4><p>不是只有“指标红了”，而是能直接回答：哪类客群、哪个阶段、哪种动作出了问题。</p></div>
-          <div class="panel"><h4>为什么出问题？</h4><p>是提醒弱、扣款命中差、支付限制时点不对，还是协商履约分层不够？</p></div>
-          <div class="panel"><h4>应该怎么调？</h4><p>给出灰度范围、动作组合、风险提示和预估收益，而不是停留在“建议关注”。</p></div>
-          <div class="panel"><h4>调完值不值？</h4><p>一起看回款、投诉、服务、人工成本，形成经营平衡。</p></div>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="title">价值与能力映射</div>
-      <div class="table-wrap">
-        <table class="table">
-          <tr><th>平台价值</th><th>业务含义</th><th>需要的能力</th></tr>
-          ${d.valueMap.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('')}
-        </table>
-      </div>
-    </div>
-  `;
+// ===== 第3页：策略与执行管理 =====
+function setSeg(s){app.seg=s;dc();render()}
+function renderP3(m){
+const seg=D.segs[app.seg]||D.segs['普通用户'];
+m.innerHTML=`
+<div class="value-banner"><div class="icon">💎</div><div class="text"><h3>本页价值</h3><p>展示不同客群在不同逾期阶段的策略组合（通用策略+差异化策略），并通过历史催回率趋势对比，分析哪些催收手段效果在增强、哪些在减弱，着重归因分析策略有效性的变化。</p></div></div>
+<div class="hero"><h2>⚙️ 策略与执行管理</h2><p>按客群切换查看每个阶段的策略配置和历史催回率趋势。纵轴是时间，横轴是阶段，帮助你发现策略效果的波动规律和归因线索。</p></div>
+<div class="card" style="margin-bottom:14px"><div class="title">客群选择</div>
+<div class="tabs">${Object.keys(D.segs).map(s=>`<div class="tab${s===app.seg?' active':''}" onclick="setSeg('${s}')">${s}</div>`).join('')}</div></div>
+<div class="card" style="margin-bottom:14px"><div class="title">📋 ${app.seg} — 各阶段策略配置</div>
+<div class="sub">每个阶段展示通用策略（绿色标签）和差异化策略（橙/红标签），以及当前催回率。</div>
+${seg.phases.map(p=>`
+<div class="strat-row" style="margin-top:12px">
+<div class="strat-phase" style="background:${p.color};color:${p.fontColor}">${p.stage}</div>
+<div class="strat-content">
+<div style="display:flex;gap:16px;flex-wrap:wrap">
+<div style="flex:1;min-width:200px"><h5>🟢 通用策略</h5><div class="strat-tags">${p.general.map(g=>`<span class="strat-tag green">${g}</span>`).join('')}</div></div>
+${p.special.length?`<div style="flex:1;min-width:200px"><h5>🔴 差异化策略</h5><div class="strat-tags">${p.special.map(s=>`<span class="strat-tag orange">${s}</span>`).join('')}</div></div>`:''}
+</div>
+<div style="margin-top:8px;font-size:12px;color:var(--sub)">当前催回率：${Object.entries(p.metrics).filter(([k,v])=>v!=='—').map(([k,v])=>`<b>${k.replace('d','D').replace('_','-')}</b>: <span style="color:var(--blue);font-weight:800">${v}</span>`).join(' | ')}</div>
+</div></div>`).join('')}
+</div>
+<div class="card" style="margin-bottom:14px"><div class="title">📈 ${app.seg} — 各阶段历史催回率趋势</div>
+<div class="sub">纵轴为催回率，横轴为时间（近6月），不同颜色代表不同逾期阶段。通过趋势判断策略效果是在增强还是减弱。</div>
+<div class="chart" id="p3trend"></div></div>
+<div class="grid equal">
+<div class="attrib-insight"><h4>📝 策略效果归因分析</h4><p>${seg.summary}</p></div>
+<div class="attrib-action"><h4>📊 趋势发现</h4><p>${seg.trend_finding}</p></div>
+</div>`;
+const stages=['D1-D15','D16-D30','D30-D60','D61+'];
+const colors=['#2563eb','#f59e0b','#dc2626','#7c3aed'];
+const series=[];
+stages.forEach((st,si)=>{
+const phaseData=seg.phases[si];
+const validHistory=phaseData.history[si];
+if(validHistory&&validHistory.some(v=>v!==null)){
+series.push({name:st,type:'line',smooth:true,data:validHistory,lineStyle:{width:3,color:colors[si]},itemStyle:{color:colors[si]},symbol:'circle',symbolSize:6})}});
+const ch=ic('p3trend');if(ch)ch.setOption({tooltip:{trigger:'axis',formatter:function(params){let s=params[0].axisValue+'<br>';params.forEach(p=>{if(p.value!==null)s+=p.marker+p.seriesName+': <b>'+p.value+'%</b><br>'});return s}},legend:{top:0},grid:{left:48,right:20,top:36,bottom:28},xAxis:{type:'category',data:M},yAxis:{type:'value',name:'催回率%',axisLabel:{formatter:v=>v+'%'}},series:series});
 }
 
-function setSegment(name){ app.segment = name; disposeCharts(); renderShort(); }
-function renderShort(){
-  const seg = d.segments[app.segment];
-  const main = document.getElementById('main');
-  main.innerHTML = `
-    <div class="hero">
-      <h2>短逾期运营台：支持按客群 drill-down，看清到底是哪个环节掉链子</h2>
-      <p>方向A重点强化了更细的客群切换和 drill-down。你可以切到不同客群，看各自的漏斗、失败原因、分层 cohort、优化方案和预估收益。这比单纯展示一个总盘回收率更容易直观感受到平台价值。</p>
-    </div>
-    <div class="card">
-      <div class="row-between"><div class="title">客群漏斗与归因</div><div class="small">当前客群：${app.segment}</div></div>
-      <div class="tabs" id="segmentTabs"></div>
-      <div class="metric-grid">
-        <div class="metric"><div class="label">当前主要问题</div><div class="value">扣款断点</div><div class="desc">当前流失主要集中在“扣款尝试 → 扣款成功”之间</div></div>
-        <div class="metric"><div class="label">优先动作</div><div class="value">补扣优化</div><div class="desc">通过分时补扣和更准的提醒，提升第一轮回收</div></div>
-        <div class="metric"><div class="label">是否建议施压</div><div class="value">按客群</div><div class="desc">不是所有人都适合加压，平台帮助做客群差异化</div></div>
-        <div class="metric"><div class="label">预估提升</div><div class="value">+0.8~1.2pp</div><div class="desc">以回收为主，同时控制投诉副作用</div></div>
-      </div>
-      <div class="grid equal" style="margin-top:14px">
-        <div class="card" style="box-shadow:none;padding:0"><div class="chart sm" id="shortFunnel"></div></div>
-        <div class="card" style="box-shadow:none;padding:0"><div class="chart sm" id="shortReason"></div></div>
-      </div>
-    </div>
-    <div class="grid equal">
-      <div class="card">
-        <div class="title">当前客群洞察与优化</div>
-        <div class="panel"><h4>核心洞察</h4><ul>${seg.insight.map(x=>`<li>${x}</li>`).join('')}</ul></div>
-        <div class="panel"><h4>优化后预估</h4><ul>${seg.plan.map(x=>`<li>${x}</li>`).join('')}</ul></div>
-        <div class="notice"><div class="icon">🎯</div><p>这个页面最能直接感受到平台价值：不是只知道“短逾期回收率下降”，而是可以继续拆到“哪类人、哪一个环节、应该调什么”。</p></div>
-      </div>
-      <div class="card">
-        <div class="title">客群 cohort drill-down</div>
-        <div class="table-wrap">
-          <table class="table">
-            <tr><th>子客群</th><th>当前回收率</th><th>主要问题</th><th>建议动作</th></tr>
-            ${seg.cohort.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join('')}
-          </table>
-        </div>
-        <div class="panel" style="margin-top:12px"><h4>触达与扣款配置示意</h4>
-          <div class="table-wrap">
-            <table class="table">
-              <tr><th>动作</th><th>当前状态</th><th>关键指标</th><th>问题</th><th>建议</th></tr>
-              ${d.touchConfig.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td></tr>`).join('')}
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-
-  document.getElementById('segmentTabs').innerHTML = Object.keys(d.segments).map(name=>`<div class="tab ${name===app.segment?'active':''}" onclick="setSegment('${name}')">${name}</div>`).join('');
-
-  const f = initChart('shortFunnel');
-  f.setOption({tooltip:{trigger:'item'},series:[{type:'funnel',left:'10%',top:12,bottom:12,width:'80%',sort:'descending',gap:3,label:{formatter:'{b} {c}%'},data:[{name:'提醒曝光',value:seg.funnel[0]},{name:'已读/点击',value:seg.funnel[1]},{name:'扣款尝试',value:seg.funnel[2]},{name:'扣款成功',value:seg.funnel[3]},{name:'支付限制触发',value:seg.funnel[4]},{name:'限制后回款',value:seg.funnel[5]}]}]});
-
-  const r = initChart('shortReason');
-  r.setOption({tooltip:{trigger:'axis'},grid:{left:110,right:24,top:18,bottom:24},xAxis:{type:'value'},yAxis:{type:'category',data:seg.reasonLabels.slice().reverse()},series:[{type:'bar',data:seg.reasonValues.slice().reverse(),itemStyle:{color:'#60a5fa',borderRadius:[0,6,6,0]},label:{show:true,position:'right',formatter:'{c}%'}}]});
+// ===== 第4页：贷后数据分析虚拟员工 =====
+function askAgent(q){
+app.chatMsgs.push({role:'user',text:q});
+const preset=D.agentPresets.find(p=>p.q===q);
+const answer=preset?preset.answer:'正在分析中...请稍候。\n\n（此为demo模式，实际使用中Agent会基于历史分析PPT风格和实时数据生成完整报告。）';
+setTimeout(()=>{app.chatMsgs.push({role:'bot',text:answer});renderChat()},300);
+renderChat();
 }
-
-function renderLong(){
-  const main = document.getElementById('main');
-  main.innerHTML = `
-    <div class="hero">
-      <h2>协商经营中心：不只看协商量，更要看履约、复逾和升级承接</h2>
-      <p>方向A把长逾期能力从“一个趋势图”扩展成更像中台的结构：有协商经营中心、有服务编排台、有作业池表现和专案升级判断。这样更容易直观感受到为什么它值得单独建模块。</p>
-    </div>
-    <div class="metric-grid">
-      ${d.longMetrics.map(m=>`<div class="metric"><div class="label">${m.label}</div><div class="value">${m.value}</div><div class="desc">${m.desc}</div></div>`).join('')}
-    </div>
-    <div class="grid equal">
-      <div class="card">
-        <div class="title">协商进件 / 履约 / 复逾联动趋势</div>
-        <div class="sub">如果没有平台，常见情况是只看到协商量上涨；有平台后，会一起看履约和二次逾期，避免“看起来很好，实际上是伪改善”。</div>
-        <div class="chart" id="longTrend"></div>
-      </div>
-      <div class="card">
-        <div class="title">长逾期服务编排台</div>
-        <div class="timeline">${d.serviceTimeline.map(t=>`<div class="tl"><div class="left">${t.stage}</div><div class="right">${t.desc}</div></div>`).join('')}</div>
-      </div>
-    </div>
-    <div class="grid equal">
-      <div class="card">
-        <div class="title">不同作业池表现</div>
-        <div class="table-wrap">
-          <table class="table">
-            <tr><th>作业池</th><th>当前策略</th><th>样本量</th><th>履约率</th><th>洞察</th></tr>
-            ${d.queueTable.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td></tr>`).join('')}
-          </table>
-        </div>
-      </div>
-      <div class="card">
-        <div class="title">增强版新增的价值展示</div>
-        <div class="panel"><h4>以前更像“结果看板”</h4><ul><li>知道协商量和金额在涨</li><li>不知道履约分层是否跟上</li><li>客服/agent/人工电催各管一段，衔接不清晰</li></ul></div>
-        <div class="panel"><h4>现在更像“经营中台”</h4><ul><li>统一看协商准入、方案、履约、复逾、投诉</li><li>统一编排客服、agent、人工电催和法务升级</li><li>统一判断哪些用户该转人工、哪些不该</li></ul></div>
-      </div>
-    </div>
-  `;
-
-  const c = initChart('longTrend');
-  c.setOption({tooltip:{trigger:'axis'},legend:{top:4},grid:{left:48,right:54,top:40,bottom:28},xAxis:{type:'category',data:d.months},yAxis:[{type:'value',name:'人数'},{type:'value',name:'%'}],series:[{name:'协商进件量',type:'bar',data:d.negotiationTrend,itemStyle:{color:'#93c5fd',borderRadius:[6,6,0,0]},barWidth:'34%'},{name:'履约率',type:'line',yAxisIndex:1,smooth:true,data:d.fulfillTrend,lineStyle:{width:3,color:'#8b5cf6'},itemStyle:{color:'#8b5cf6'}},{name:'二次逾期率',type:'line',yAxisIndex:1,smooth:true,data:d.relapseTrend,lineStyle:{width:3,color:'#ef4444'},itemStyle:{color:'#ef4444'}}]});
+function askCustom(){
+const input=document.getElementById('agentInput');
+const q=input.value.trim();if(!q)return;
+input.value='';
+askAgent(q);
 }
-
-function renderRisk(){
-  const main = document.getElementById('main');
-  main.innerHTML = `
-    <div class="hero">
-      <h2>风险与客诉中枢：从“只能看投诉量”升级为“知道投诉来自哪里”</h2>
-      <p>这页强化了更真实的风险治理视角：不仅看贷后类客诉、征信客诉、监管敏感投诉趋势，还能看投诉热力矩阵和敏感动作贡献。这样你能更直观地感受到平台是怎么帮助你平衡“回款收益”和“投诉代价”的。</p>
-    </div>
-    <div class="grid equal">
-      <div class="card">
-        <div class="title">客诉结构趋势</div>
-        <div class="chart" id="riskTrend"></div>
-      </div>
-      <div class="card">
-        <div class="title">投诉归因：高发动作</div>
-        <div class="chart" id="riskAction"></div>
-      </div>
-    </div>
-    <div class="grid equal">
-      <div class="card">
-        <div class="title">阶段 × 动作 热力矩阵</div>
-        <div class="sub">热力矩阵能更直观地展示问题集中在哪个阶段、哪个动作。当前高热点集中在 D30+ 的协商争议和征信/律函动作。</div>
-        <div class="chart sm" id="riskMatrix"></div>
-      </div>
-      <div class="card">
-        <div class="title">敏感动作治理台账</div>
-        <div class="table-wrap">
-          <table class="table">
-            <tr><th>动作</th><th>触发量</th><th>回款贡献</th><th>投诉贡献</th><th>治理状态</th><th>重点问题</th></tr>
-            ${d.sensitiveTable.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td><td>${r[5]}</td></tr>`).join('')}
-          </table>
-        </div>
-      </div>
-    </div>
-  `;
-
-  const c1 = initChart('riskTrend');
-  c1.setOption({tooltip:{trigger:'axis'},legend:{top:4},grid:{left:48,right:28,top:40,bottom:28},xAxis:{type:'category',data:d.months},yAxis:{type:'value'},series:[{name:'贷后类客诉',type:'bar',stack:'x',data:d.complaints.loan,itemStyle:{color:'#60a5fa'}},{name:'征信客诉',type:'bar',stack:'x',data:d.complaints.credit,itemStyle:{color:'#f59e0b'}},{name:'监管敏感投诉',type:'bar',stack:'x',data:d.complaints.regulator,itemStyle:{color:'#f87171'}}]});
-
-  const c2 = initChart('riskAction');
-  c2.setOption({tooltip:{trigger:'axis'},grid:{left:110,right:24,top:18,bottom:24},xAxis:{type:'value'},yAxis:{type:'category',data:d.complaints.actionLabels.slice().reverse()},series:[{type:'bar',data:d.complaints.actionValues.slice().reverse(),itemStyle:{color:'#fb7185',borderRadius:[0,6,6,0]},label:{show:true,position:'right',formatter:'{c}件'}}]});
-
-  const c3 = initChart('riskMatrix');
-  c3.setOption({tooltip:{position:'top'},grid:{height:'72%',top:'10%'},xAxis:{type:'category',data:d.complaints.matrixCols},yAxis:{type:'category',data:d.complaints.matrixRows},visualMap:{min:0,max:14,calculable:false,orient:'horizontal',left:'center',bottom:0,inRange:{color:['#eff6ff','#93c5fd','#f59e0b','#ef4444']}},series:[{type:'heatmap',data:(()=>{const arr=[];d.complaints.matrix.forEach((row,y)=>row.forEach((v,x)=>arr.push([x,y,v])));return arr;})(),label:{show:true},emphasis:{itemStyle:{shadowBlur:10,shadowColor:'rgba(0,0,0,.25)'}}}]});
+function renderChat(){
+const box=document.getElementById('chatBox');if(!box)return;
+box.innerHTML=app.chatMsgs.map(m=>{
+const isUser=m.role==='user';
+const textHtml=m.text.replace(/\n/g,'<br>').replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/## (.+?)(<br>|$)/g,'<h4 style="margin:8px 0 4px;font-size:14px">$1</h4>').replace(/### (.+?)(<br>|$)/g,'<h5 style="margin:6px 0 3px;font-size:13px">$1</h5>').replace(/\|(.+)\|/g,function(match){return'<div style="font-family:monospace;font-size:11px;background:#f8fbff;padding:2px 6px;border-radius:4px;margin:2px 0">'+match+'</div>'});
+return`<div class="chat-msg ${isUser?'user':'bot'}"><div class="chat-avatar">${isUser?'👤':'🤖'}</div><div class="chat-bubble">${textHtml}</div></div>`}).join('');
+box.scrollTop=box.scrollHeight;
 }
-
-function updateStrategy(key,val){ app.strategy[key]=val; disposeCharts(); renderLab(); }
-function strategyScore(){
-  const s = app.strategy;
-  let recovery = 0.5, complaint = 0.02, roi = 1.1, manual = 0.8;
-  if(s.segment==='高风险大金额'){ recovery+=0.4; complaint+=0.01; roi+=0.25; manual+=0.25; }
-  if(s.segment==='首逾高额度'){ recovery+=0.25; complaint+=0.005; roi+=0.18; }
-  if(s.stage==='D1-D5'){ recovery+=0.2; complaint-=0.003; }
-  if(s.stage==='D30-D60'){ recovery+=0.15; complaint+=0.008; manual+=0.18; }
-  if(s.touch==='提醒强化'){ recovery+=0.18; roi+=0.05; }
-  if(s.touch==='服务通知 + 红点'){ recovery+=0.12; complaint-=0.002; }
-  if(s.deduct==='晚间补扣'){ recovery+=0.28; roi+=0.12; }
-  if(s.deduct==='自然人补扣'){ recovery+=0.22; complaint+=0.004; }
-  if(s.pressure==='支付限制灰度'){ recovery+=0.23; complaint+=0.008; }
-  if(s.pressure==='征信预告'){ recovery+=0.14; complaint+=0.015; }
-  if(s.manual==='24h 后升级人工'){ manual+=0.3; roi+=0.12; }
-  if(s.manual==='协商页未提交升级'){ manual+=0.18; roi+=0.08; }
-  return {recovery:recovery.toFixed(2), complaint:complaint.toFixed(3), roi:roi.toFixed(2), manual:manual.toFixed(2)};
+function renderP4(m){
+m.innerHTML=`
+<div class="value-banner"><div class="icon">💎</div><div class="text"><h3>本页价值</h3><p>贷后数据分析虚拟员工（Agent）通过学习历史分析PPT和结论，掌握团队的分析风格和方法论。当你输入一个分析需求时，Agent能自动生成包含"问题背景→问题归因→解决方法与约束→最优方案建议"的一体化分析报告，大幅缩短分析周期。</p></div></div>
+<div class="hero"><h2>🤖 贷后数据分析虚拟员工</h2><p>这是一个基于历史分析经验训练的AI Agent。它学习了你过往的PPT写作方式和分析框架，能够根据输入的分析需求，自动生成符合团队风格的一体化分析报告。</p></div>
+<div class="grid equal">
+<div class="card">
+<div class="title">🧠 Agent 能力说明</div>
+<div class="panel"><h4>已学习的知识库</h4><ul><li>历史贷后分析PPT（催回率归因、客群分析、策略效果评估等）</li><li>分付贷后数据体系（入催率、各阶段催回率、客群维度指标）</li><li>团队分析方法论（问题背景→归因→方案评估→最优建议）</li><li>OH历史逾期表、B/C卡风险等级体系、催收策略矩阵</li></ul></div>
+<div class="panel"><h4>输出格式</h4><ul><li><b>问题背景：</b>量化描述指标变化幅度和影响范围</li><li><b>问题归因：</b>按贡献度排序，交叉多维度定位根因</li><li><b>解决方法与约束：</b>多方案对比，标注预估效果、风险和资源需求</li><li><b>最优方案建议：</b>给出推荐组合和执行节奏</li></ul></div>
+<div class="panel"><h4>使用须知</h4><p>当前为Demo模式，Agent基于预设知识库回答。实际部署时，Agent会接入实时数据API并根据最新数据动态生成分析。你可以通过上传新的分析PPT来持续丰富Agent的知识库。</p></div>
+</div>
+<div class="card">
+<div class="title">💬 与虚拟员工对话</div>
+<div class="quick-q">${D.agentPresets.map(p=>`<span onclick="askAgent('${p.q}')">${p.q}</span>`).join('')}</div>
+<div class="chat-container" id="chatBox">
+<div class="chat-msg bot"><div class="chat-avatar">🤖</div><div class="chat-bubble">你好！我是贷后数据分析虚拟员工。<br><br>我已学习了团队历史分析PPT的写作风格和分析框架，可以帮你快速生成催回率异动分析报告。<br><br>你可以点击上方的快捷问题，或直接输入你想分析的内容。例如：<br>• "分析大金额用户M1催回率异动"<br>• "C卡高风险入催率为什么上升"<br>• "哪些催收手段效果在减弱"</div></div>
+</div>
+<div class="chat-input"><input id="agentInput" placeholder="输入分析需求，如：分析XX客群的催回率波动..." onkeydown="if(event.key==='Enter')askCustom()"><button onclick="askCustom()">发送</button></div>
+</div>
+</div>`;
 }
-function renderLab(){
-  const score = strategyScore();
-  const main = document.getElementById('main');
-  main.innerHTML = `
-    <div class="hero">
-      <h2>策略实验室：更像真实平台的配置体验</h2>
-      <p>方向A这里做了一个简化但更像真实系统的策略配置体验。你可以组合客群、阶段、提醒、扣款、施压、人工升级规则，右侧会即时给出预估收益、副作用和 ROI，帮助你直观感受平台为什么不是静态展示，而是“真正能支撑变更决策”的工具。</p>
-    </div>
-    <div class="grid equal">
-      <div class="card">
-        <div class="title">策略配置器</div>
-        <div class="control">
-          <div><div class="label">目标客群</div><select class="select" onchange="updateStrategy('segment',this.value)"><option ${app.strategy.segment==='高风险大金额'?'selected':''}>高风险大金额</option><option ${app.strategy.segment==='首逾高额度'?'selected':''}>首逾高额度</option><option ${app.strategy.segment==='一般复逾'?'selected':''}>一般复逾</option></select></div>
-          <div><div class="label">逾期阶段</div><select class="select" onchange="updateStrategy('stage',this.value)"><option ${app.strategy.stage==='D1-D5'?'selected':''}>D1-D5</option><option ${app.strategy.stage==='D6-D15'?'selected':''}>D6-D15</option><option ${app.strategy.stage==='D30-D60'?'selected':''}>D30-D60</option></select></div>
-          <div><div class="label">触达动作</div><select class="select" onchange="updateStrategy('touch',this.value)"><option ${app.strategy.touch==='提醒强化'?'selected':''}>提醒强化</option><option ${app.strategy.touch==='服务通知 + 红点'?'selected':''}>服务通知 + 红点</option><option ${app.strategy.touch==='普通提醒'?'selected':''}>普通提醒</option></select></div>
-          <div><div class="label">扣款动作</div><select class="select" onchange="updateStrategy('deduct',this.value)"><option ${app.strategy.deduct==='晚间补扣'?'selected':''}>晚间补扣</option><option ${app.strategy.deduct==='自然人补扣'?'selected':''}>自然人补扣</option><option ${app.strategy.deduct==='仅早晨扣款'?'selected':''}>仅早晨扣款</option></select></div>
-          <div><div class="label">施压动作</div><select class="select" onchange="updateStrategy('pressure',this.value)"><option ${app.strategy.pressure==='支付限制灰度'?'selected':''}>支付限制灰度</option><option ${app.strategy.pressure==='征信预告'?'selected':''}>征信预告</option><option ${app.strategy.pressure==='暂不施压'?'selected':''}>暂不施压</option></select></div>
-          <div><div class="label">人工升级规则</div><select class="select" onchange="updateStrategy('manual',this.value)"><option ${app.strategy.manual==='24h 后升级人工'?'selected':''}>24h 后升级人工</option><option ${app.strategy.manual==='协商页未提交升级'?'selected':''}>协商页未提交升级</option><option ${app.strategy.manual==='暂不升级人工'?'selected':''}>暂不升级人工</option></select></div>
-        </div>
-        <div class="notice"><div class="icon">🧪</div><p>这就是平台和 demo 展示的差别：你不再只是看到“现在有哪些策略”，而是能直观看到“如果这么配，会发生什么”。</p></div>
-      </div>
-      <div class="card">
-        <div class="title">策略影响预估</div>
-        <div class="metric-grid">
-          <div class="metric"><div class="label">预估回收提升</div><div class="value">+${score.recovery}pp</div><div class="desc">基于 mock 规则引擎给出的增益评估</div></div>
-          <div class="metric"><div class="label">投诉波动</div><div class="value">+${score.complaint}pp</div><div class="desc">副作用越高，越需要灰度和审批</div></div>
-          <div class="metric"><div class="label">ROI</div><div class="value">${score.roi}x</div><div class="desc">综合回收收益与资源成本的粗估</div></div>
-          <div class="metric"><div class="label">人工命中增量</div><div class="value">+${score.manual}pp</div><div class="desc">升级规则越准，人工越值钱</div></div>
-        </div>
-        <div class="panel" style="margin-top:12px"><h4>当前组合点评</h4><p>这套组合更适合用于 <b>${app.strategy.segment}</b> 的 <b>${app.strategy.stage}</b> 阶段。它的主要收益来自 <b>${app.strategy.deduct}</b> 和 <b>${app.strategy.touch}</b> 的组合，但如果继续叠加 <b>${app.strategy.pressure}</b>，就需要同步看投诉和敏感动作审批。平台的价值就在于：把这些权衡提前看到，而不是等上线后靠感觉补救。</p></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="title">策略矩阵示意</div>
-      <div class="matrix">
-        <div class="mcell"><h5>客群规则</h5><p>风险等级、金额、历史逾期、主动沟通意愿</p></div>
-        <div class="mcell"><h5>阶段规则</h5><p>D1-D5、D6-D15、D30-D60、D60+</p></div>
-        <div class="mcell"><h5>动作顺序</h5><p>提醒 → 扣款 → 施压 → 协商 → 人工升级</p></div>
-        <div class="mcell"><h5>灰度范围</h5><p>5%、15%、30% 或指定客群灰度</p></div>
-        <div class="mcell"><h5>回滚阈值</h5><p>投诉超阈值或回收不达预期自动回滚</p></div>
-      </div>
-    </div>
-  `;
-}
-
-function renderRelease(){
-  const main = document.getElementById('main');
-  main.innerHTML = `
-    <div class="hero">
-      <h2>变更发布驾驶舱：让每次低频但高风险的调整都可控</h2>
-      <p>这页专门回应“贷后策略调得不频繁，为什么还需要平台”。答案是：正因为调得不频繁，但每次都影响回款、服务、客诉、监管风险，所以更需要一个变更驾驶舱来管理灰度、审批、回滚和复盘。</p>
-    </div>
-    <div class="release-grid">
-      ${d.releaseCards.map(c=>`<div class="release"><h4>${c.name}</h4><p>${c.desc}</p><div class="tag ${c.cls}">${c.status}</div></div>`).join('')}
-    </div>
-    <div class="grid equal" style="margin-top:16px">
-      <div class="card">
-        <div class="title">变更评估表</div>
-        <div class="table-wrap">
-          <table class="table">
-            <tr><th>变更对象</th><th>新动作</th><th>预估收益</th><th>副作用控制</th></tr>
-            ${d.releases.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join('')}
-          </table>
-        </div>
-      </div>
-      <div class="card">
-        <div class="title">灰度前后效果对比</div>
-        <div class="chart" id="releaseCompare"></div>
-      </div>
-    </div>
-    <div class="grid equal">
-      <div class="card">
-        <div class="title">发布节奏时间线</div>
-        <div class="timeline">${d.releaseTimeline.map(t=>`<div class="tl"><div class="left">${t[0]}</div><div class="right"><b>${t[1]}</b><br>${t[2]}</div></div>`).join('')}</div>
-      </div>
-      <div class="card">
-        <div class="title">更真实的平台感来自哪里</div>
-        <div class="panel"><h4>不是“展示当前策略”</h4><p>而是管理变更的全过程：谁提出、为什么改、影响哪些人、灰度多少、什么时候回滚、上线后看什么指标。</p></div>
-        <div class="panel"><h4>这页能直观体现的价值</h4><ul><li>变更前就能看到收益与风险</li><li>变更中有灰度和审批</li><li>变更后能验证效果并沉淀复盘</li></ul></div>
-      </div>
-    </div>
-  `;
-
-  const c = initChart('releaseCompare');
-  c.setOption({tooltip:{trigger:'axis'},legend:{top:4},grid:{left:48,right:28,top:40,bottom:28},xAxis:{type:'category',data:['短逾回收率','协商履约率','贷后类客诉率','人工升级命中率']},yAxis:[{type:'value',name:'%',min:0,max:100},{type:'value',name:'客诉率',min:0,max:.3}],series:[{name:'变更前',type:'bar',data:[d.compareBefore[0],d.compareBefore[1],0,d.compareBefore[3]],itemStyle:{color:'#cbd5e1',borderRadius:[6,6,0,0]}},{name:'变更后',type:'bar',data:[d.compareAfter[0],d.compareAfter[1],0,d.compareAfter[3]],itemStyle:{color:'#60a5fa',borderRadius:[6,6,0,0]}},{name:'客诉率(前)',type:'line',yAxisIndex:1,data:[null,null,d.compareBefore[2],null],symbolSize:10,lineStyle:{width:0},itemStyle:{color:'#f59e0b'}},{name:'客诉率(后)',type:'line',yAxisIndex:1,data:[null,null,d.compareAfter[2],null],symbolSize:10,lineStyle:{width:0},itemStyle:{color:'#ef4444'}}]});
-}
-
-function setCase(idx){ app.caseIndex = idx; renderCase360(); }
-function renderCase360(){
-  const u = d.users[app.caseIndex];
-  const main = document.getElementById('main');
-  main.innerHTML = `
-    <div class="hero">
-      <h2>用户 360 视图：让平台不只服务“总盘经营”，也能支撑个案判断</h2>
-      <p>方向A补了一页更像真实系统的用户视图。它能帮助你感受：平台不只是给负责人看趋势，也能给运营、客服、人工电催提供单用户级别的判断依据，尤其适合高风险、大金额和长逾期场景。</p>
-    </div>
-    <div class="tabs">
-      ${d.users.map((item,idx)=>`<div class="tab ${idx===app.caseIndex?'active':''}" onclick="setCase(${idx})">${item.name}</div>`).join('')}
-    </div>
-    <div class="case-grid">
-      <div class="case-box">
-        <h4>基础画像</h4>
-        <ul>${u.profile.map(x=>`<li>${x}</li>`).join('')}</ul>
-      </div>
-      <div class="case-box">
-        <h4>关键判断</h4>
-        <p>${u.insight}</p>
-        <div class="panel" style="margin-top:10px"><h4>建议下一步</h4><p>${u.next}</p></div>
-      </div>
-    </div>
-    <div class="grid equal" style="margin-top:16px">
-      <div class="card">
-        <div class="title">用户旅程</div>
-        <div class="timeline">${u.path.map((x,i)=>`<div class="tl"><div class="left">节点 ${i+1}</div><div class="right">${x}</div></div>`).join('')}</div>
-      </div>
-      <div class="card">
-        <div class="title">这一页体现的平台价值</div>
-        <div class="panel"><h4>没有平台时</h4><p>总盘看起来没问题，但一到具体用户，客服、agent、人工电催经常拿不到同一份完整信息。</p></div>
-        <div class="panel"><h4>有平台后</h4><p>任何承接角色都能基于统一画像、统一动作历史、统一推荐决策来处理案件，减少断层和重复施压。</p></div>
-      </div>
-    </div>
-  `;
-}
-
-function setAi(idx){ app.aiIndex = idx; renderAI(); }
-function renderAI(){
-  const item = d.aiCards[app.aiIndex];
-  const main = document.getElementById('main');
-  main.innerHTML = `
-    <div class="hero">
-      <h2>AI 经营副驾：从“会总结”升级为“会提建议、会生成待办”</h2>
-      <p>方向A这里强化了 AI 的交互感：不是固定写一段说明，而是围绕真实经营问题给出结论、证据、动作建议。它的价值不在于替你拍板，而在于让负责人更快地找到问题、形成动作、拉齐团队。</p>
-    </div>
-    <div class="grid equal">
-      <div class="card">
-        <div class="title">AI 今日待办</div>
-        <div class="issue-list">
-          <div class="issue"><h4>1. 高风险首逾客群扣款命中异常</h4><p>建议灰度“提醒强化 + 晚间补扣 + 限制灰度”，3 天内观察回收和投诉双指标。</p></div>
-          <div class="issue"><h4>2. D30+ 征信/外呼敏感投诉抬头</h4><p>建议核查征信解释链路和外呼话术版本，对高风险大金额专案先做治理。</p></div>
-          <div class="issue"><h4>3. 协商进件量上涨但履约分层不足</h4><p>建议上线协商准入规则和履约预警，优先治理高风险大金额专案。</p></div>
-          <div class="issue"><h4>4. 人工升级池仍偏粗放</h4><p>建议把升级条件限定在“大金额 + 高风险 + 限制后未回款”的组合规则上。</p></div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="title">常见经营问题</div>
-        <div class="ai-grid">
-          ${d.aiCards.map((x,i)=>`<div class="ask" onclick="setAi(${i})"><h4>${x.title}</h4><p>${x.answer.slice(0,50)}...</p></div>`).join('')}
-        </div>
-        <div class="ai-result" style="margin-top:14px">
-          <h3>${item.title}</h3>
-          <div class="ai-block"><b>结论</b><p>${item.answer}</p></div>
-          <div class="ai-block"><b>证据</b><p>${item.evidence}</p></div>
-          <div class="ai-block"><b>建议动作</b><p>${item.action}</p></div>
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-function setAttribDim(key){ app.attribDim=key; app.attribSub=0; disposeCharts(); renderAttrib(); }
-function setAttribSub(idx){ app.attribSub=idx; disposeCharts(); renderAttrib(); }
-function renderAttrib(){
-  const dims = d.attribDims;
-  const curDim = dims.find(x=>x.key===app.attribDim) || dims[0];
-  const curSub = curDim.subs[app.attribSub] || curDim.subs[0];
-  const main = document.getElementById('main');
-  main.innerHTML = `
-    <div class="hero">
-      <h2>🔍 回款归因分析：定位回款下降的根因维度</h2>
-      <p>从6大维度（风险等级、用户画像、借款画像、逾期画像、人行画像、催收动作）交叉分析回款变化，每个维度下钻到子维度，找出对回款下降贡献最大的客群和动作断点，形成可执行的治理优先级。</p>
-    </div>
-    <div class="card" style="margin-bottom:14px">
-      <div class="title">维度选择</div>
-      <div class="attrib-dims">
-        ${dims.map(x=>`<div class="attrib-dim${x.key===app.attribDim?' active':''}" onclick="setAttribDim('${x.key}')">${x.icon} ${x.name}</div>`).join('')}
-      </div>
-      <div class="tabs">
-        ${curDim.subs.map((s,i)=>`<div class="tab${i===app.attribSub?' active':''}" onclick="setAttribSub(${i})">${s.name}</div>`).join('')}
-      </div>
-    </div>
-    <div class="attrib-summary">
-      ${curSub.kpis.map(k=>`<div class="attrib-sum-card"><div class="lab">${k.l}</div><div class="val">${k.v}</div><div class="chg ${k.t}">${k.c}</div></div>`).join('')}
-    </div>
-    <div class="grid equal">
-      <div class="card">
-        <div class="title">趋势 / 分布</div>
-        <div id="attribChart" class="chart"></div>
-      </div>
-      <div class="card">
-        <div class="title">回款下降贡献度</div>
-        <div class="contrib-bar">
-          ${curSub.contribs.map(c=>`<div style="width:${c.pct}%;background:${c.color}" title="${c.name} ${c.pct}%">${c.pct}%</div>`).join('')}
-        </div>
-        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:10px">
-          ${curSub.contribs.map(c=>`<span style="font-size:11px;display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:3px;background:${c.color};display:inline-block"></span>${c.name} (${c.pct}%)</span>`).join('')}
-        </div>
-        <div id="attribPie" class="chart sm" style="margin-top:10px"></div>
-      </div>
-    </div>
-    <div class="card" style="margin-top:14px">
-      <div class="title">明细数据</div>
-      <div class="attrib-detail">
-        <table>
-          <thead><tr>${curSub.table.cols.map(c=>'<th>'+c+'</th>').join('')}</tr></thead>
-          <tbody>${curSub.table.rows.map(r=>'<tr>'+r.map((v,ci)=>{
-            if(ci===0) return '<td><b>'+v+'</b></td>';
-            const isMoM = curSub.table.cols[ci]==='MoM';
-            if(isMoM){
-              const isNeg = v.includes('-');
-              return '<td><span class="kpi-change '+(isNeg?'bad':'good')+'">'+v+'</span></td>';
-            }
-            return '<td>'+v+'</td>';
-          }).join('')+'</tr>').join('')}</tbody>
-        </table>
-      </div>
-    </div>
-    <div class="grid equal" style="margin-top:14px">
-      <div class="attrib-insight">
-        <h4>💡 归因洞察</h4>
-        <p>${curSub.insight}</p>
-      </div>
-      <div class="attrib-action">
-        <h4>🎯 建议动作</h4>
-        <p>${curSub.action}</p>
-      </div>
-    </div>
-  `;
-  // render trend/distribution chart
-  const cd = curSub.chartData;
-  const isBar = cd.labels.length >= 5;
-  const ch1 = initChart('attribChart');
-  if(ch1){
-    ch1.setOption({
-      tooltip:{trigger:'axis'},
-      legend:{data:['实际值','基线'],top:0,right:0,textStyle:{fontSize:11}},
-      grid:{top:36,left:48,right:20,bottom:28},
-      xAxis:{type:'category',data:cd.labels,axisLabel:{fontSize:11}},
-      yAxis:{type:'value',axisLabel:{fontSize:11,formatter:v=>v+'%'}},
-      series:[
-        {name:'实际值',type:isBar?'bar':'line',data:cd.series,itemStyle:{color:'#2563eb'},barMaxWidth:32,smooth:true,areaStyle:isBar?undefined:{color:{type:'linear',x:0,y:0,x2:0,y2:1,colorStops:[{offset:0,color:'rgba(37,99,235,.15)'},{offset:1,color:'rgba(255,255,255,0)'}]}}},
-        {name:'基线',type:'line',data:cd.baseline,lineStyle:{type:'dashed',color:'#f97316',width:2},symbol:'none',itemStyle:{color:'#f97316'}}
-      ]
-    });
-  }
-  // render pie chart
-  const ch2 = initChart('attribPie');
-  if(ch2){
-    ch2.setOption({
-      tooltip:{trigger:'item',formatter:'{b}: {d}%'},
-      series:[{
-        type:'pie',radius:['40%','70%'],center:['50%','55%'],
-        label:{fontSize:11,formatter:'{b}\n{d}%'},
-        data:curSub.contribs.map(c=>({name:c.name,value:c.pct,itemStyle:{color:c.color}}))
-      }]
-    });
-  }
-}
-
-render('control');
-window.addEventListener('resize',()=>Object.values(charts).forEach(c=>{ try{ c.resize(); }catch(e){} }));
+render();
+window.addEventListener('resize',()=>Object.values(charts).forEach(c=>{try{c.resize()}catch(e){}}));
 </script>
 </body>
 </html>
