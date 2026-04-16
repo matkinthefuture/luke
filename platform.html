@@ -771,16 +771,34 @@ m.innerHTML=`
 <div class="tabs">${dim.subs.map((s,i)=>`<div class="tab${i===app.sub?' active':''}" onclick="setSub(${i})">${s.name}</div>`).join('')}</div></div>
 <div class="grid four">${sub.kpis.map(k=>`<div class="card kpi-card ${k.t==='bad'?'red':'green'}"><div class="kpi-label">${k.l}</div><div class="kpi-value" style="font-size:20px">${k.v}</div><div class="kpi-change ${k.t}">${k.c}</div></div>`).join('')}</div>
 <div class="grid equal">
-<div class="card"><div class="title">📊 各群体催回率/入催率分布</div><div class="chart" id="p2bar"></div></div>
+<div class="card"><div class="title">📊 各群体入催率趋势（近6月）</div><div class="sub">按子维度分段展示入催率6个月变化趋势，识别哪些分段在持续恶化。</div><div class="chart" id="p2inflow"></div></div>
+<div class="card"><div class="title">📈 各群体催回率趋势（近6月）</div><div class="sub">按子维度分段展示整体催回率6个月变化趋势，判断是短期波动还是结构性恶化。</div><div class="chart" id="p2recall"></div></div>
+</div>
+<div class="grid equal">
 <div class="card"><div class="title">📉 回款下降贡献度</div>
 <div class="contrib-bar">${sub.pieSeries.map((c,i)=>{const colors=['#dc2626','#f97316','#eab308','#3b82f6','#22c55e','#8b5cf6'];return`<div style="width:${c.value}%;background:${colors[i%6]}" title="${c.name} ${c.value}%">${c.value>10?c.value+'%':''}</div>`}).join('')}</div>
 <div style="display:flex;flex-wrap:wrap;gap:8px;margin:8px 0">${sub.pieSeries.map((c,i)=>{const colors=['#dc2626','#f97316','#eab308','#3b82f6','#22c55e','#8b5cf6'];return`<span style="font-size:11px;display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:3px;background:${colors[i%6]};display:inline-block"></span>${c.name} (${c.value}%)</span>`}).join('')}</div>
-<div class="chart xs" id="p2pie"></div></div></div>
+<div class="chart xs" id="p2pie"></div></div>
+<div class="card"><div class="title">📊 各群体最新催回率对比</div><div class="sub">柱状图展示各分段当前催回率水平，快速定位表现最差的群体。</div><div class="chart" id="p2bar"></div></div>
+</div>
 <div class="card" style="margin-bottom:14px"><div class="title">📋 6个月历史趋势数据</div><div class="sub" style="margin-bottom:10px">统计指标：整体催回率、M1催回率、M2催回率、入催率、在贷占比，覆盖25/10~26/03共6个月，用于判断是结构性恶化还是短期波动。</div><div class="table-wrap"><table class="table"><thead><tr>${sub.hist.cols.map(c=>'<th>'+c+'</th>').join('')}</tr></thead><tbody>${sub.hist.rows.map(r=>'<tr>'+r.map((v,ci)=>{if(ci<=1)return'<td><b>'+v+'</b></td>';return'<td>'+v+'</td>'}).join('')+'</tr>').join('')}</tbody></table></div></div>
 <div class="card" style="margin-bottom:14px"><div class="title">🔍 单维度异动分析</div><div class="sub" style="margin-bottom:8px">聚焦当前二级类目"${sub.name}"下各子群体的指标变化趋势，按严重程度排序，标注异动方向、幅度和持续时间。</div>${sub.findings.map(f=>`<div class="finding ${f.type}"><p>${f.text}</p></div>`).join('')}</div>
 <div class="card" style="margin-bottom:14px;border:2px solid #bfdbfe;background:linear-gradient(135deg,#f0f9ff,#eff6ff)"><div class="title" style="color:#1d4ed8">🧬 多维度交叉异动分析</div><div class="sub" style="margin-bottom:8px">在单维度发现的基础上，叠加2-3个其他维度进行交叉验证，精确定位真正的风险根因和目标客群。</div><div style="padding:14px 16px;border-radius:14px;background:#fff;border:1px solid #bfdbfe"><p style="font-size:12px;line-height:2;color:#334155">${sub.crossInsight}</p></div></div>
 <div class="card" style="margin-bottom:14px;border:2px solid #bbf7d0;background:linear-gradient(135deg,#f0fdf4,#ecfdf5)"><div class="title" style="color:#047857">💡 业务价值与行动建议</div><div class="sub" style="margin-bottom:8px">基于上述异动分析，说明该维度发现对业务决策的具体价值，以及可落地的下一步动作。</div><div style="padding:14px 16px;border-radius:14px;background:#fff;border:1px solid #bbf7d0"><p style="font-size:12px;line-height:2;color:#334155">${sub.bizValue||'该维度的分析帮助团队从数据层面回答"哪里在变差→变差了多少→为什么变差"，直接输入到策略配置和资源分配决策中。交叉分析进一步区分了"需要重点投入"和"可以暂缓关注"的子群体，避免一刀切策略浪费资源。'}</p></div></div>
 `;
+// 从hist.rows中提取趋势数据
+const trendColors=['#2563eb','#dc2626','#f59e0b','#059669','#7c3aed','#ec4899'];
+const inflowLines=[];const recallLines=[];
+const seenSegs={};
+sub.hist.rows.forEach(r=>{
+const seg=r[0],metric=r[1];
+if(!seenSegs[seg])seenSegs[seg]=true;
+const vals=r.slice(2).map(v=>parseFloat(v));
+if(metric==='入催率')inflowLines.push({name:seg,data:vals});
+if(metric==='整体催回率')recallLines.push({name:seg,data:vals});
+});
+const chInflow=ic('p2inflow');if(chInflow)chInflow.setOption({tooltip:{trigger:'axis',formatter:function(ps){let s=ps[0].axisValue+'<br>';ps.forEach(p=>{if(p.value!=null)s+=p.marker+p.seriesName+': <b>'+p.value+'%</b><br>'});return s}},legend:{top:0,textStyle:{fontSize:11}},grid:{left:48,right:20,top:36,bottom:28},xAxis:{type:'category',data:M},yAxis:{type:'value',name:'入催率%',axisLabel:{formatter:v=>v+'%'}},series:inflowLines.map((l,i)=>({name:l.name,type:'line',smooth:true,data:l.data,lineStyle:{width:2.5,color:trendColors[i%6]},itemStyle:{color:trendColors[i%6]},symbol:'circle',symbolSize:5}))});
+const chRecall=ic('p2recall');if(chRecall)chRecall.setOption({tooltip:{trigger:'axis',formatter:function(ps){let s=ps[0].axisValue+'<br>';ps.forEach(p=>{if(p.value!=null)s+=p.marker+p.seriesName+': <b>'+p.value+'%</b><br>'});return s}},legend:{top:0,textStyle:{fontSize:11}},grid:{left:48,right:20,top:36,bottom:28},xAxis:{type:'category',data:M},yAxis:{type:'value',name:'催回率%',axisLabel:{formatter:v=>v+'%'}},series:recallLines.map((l,i)=>({name:l.name,type:'line',smooth:true,data:l.data,lineStyle:{width:2.5,color:trendColors[i%6]},itemStyle:{color:trendColors[i%6]},symbol:'circle',symbolSize:5}))});
 const ch1=ic('p2bar');if(ch1)ch1.setOption({tooltip:{trigger:'axis'},grid:{left:48,right:20,top:24,bottom:28},xAxis:{type:'category',data:sub.chartLabels,axisLabel:{fontSize:11,rotate:sub.chartLabels.length>6?30:0}},yAxis:{type:'value',axisLabel:{fontSize:11,formatter:v=>v+'%'}},series:[{type:'bar',data:sub.chartSeries,itemStyle:{color:function(p){const v=p.data;return v<80?'#dc2626':v<88?'#f97316':v<92?'#eab308':'#22c55e'},borderRadius:[6,6,0,0]},label:{show:true,position:'top',fontSize:10,formatter:'{c}%'},barMaxWidth:36}]});
 const ch2=ic('p2pie');if(ch2)ch2.setOption({tooltip:{trigger:'item',formatter:'{b}: {d}%'},series:[{type:'pie',radius:['40%','68%'],center:['50%','55%'],label:{fontSize:10,formatter:'{b}\n{d}%'},data:sub.pieSeries.map((c,i)=>{const colors=['#dc2626','#f97316','#eab308','#3b82f6','#22c55e','#8b5cf6'];return{name:c.name,value:c.value,itemStyle:{color:colors[i%6]}}})}]});
 }
